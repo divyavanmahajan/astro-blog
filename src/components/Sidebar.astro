@@ -1,33 +1,40 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection } from "astro:content";
+import Search from "./Search.astro";
 
 // Fetch recent posts
-const posts = (await getCollection('blog'))
+const posts = (await getCollection("blog"))
     .filter((post) => !post.data.draft)
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
     .slice(0, 5);
 
 // Get unique tags
-const allPosts = await getCollection('blog');
+const allPosts = await getCollection("blog");
 const tags = [...new Set(allPosts.map((post) => post.data.tags).flat())];
 ---
 
 <aside class="sidebar">
-    <!-- Search Widget Placeholder -->
+    <!-- Search Widget -->
     <div class="widget search-widget">
         <h3 class="widget-title">Search</h3>
-        <input type="text" placeholder="Search..." disabled style="width: 100%; padding: 0.5rem;" />
+        <Search />
     </div>
 
     <!-- Recent Posts Widget -->
     <div class="widget recent-posts">
         <h3 class="widget-title">Recent Posts</h3>
         <ul>
-            {posts.map((post) => (
-                <li>
-                    <a href={`${import.meta.env.BASE_URL}posts/${post.slug}/`}>{post.data.title}</a>
-                </li>
-            ))}
+            {
+                posts.map((post) => (
+                    <li>
+                        <a
+                            href={`${import.meta.env.BASE_URL}posts/${post.slug}/`}
+                        >
+                            {post.data.title}
+                        </a>
+                    </li>
+                ))
+            }
         </ul>
     </div>
 
@@ -35,9 +42,16 @@ const tags = [...new Set(allPosts.map((post) => post.data.tags).flat())];
     <div class="widget tag-cloud">
         <h3 class="widget-title">Tags</h3>
         <div class="tags">
-            {tags.map((tag) => (
-                <a href={`${import.meta.env.BASE_URL}tags/${tag}`} class="tag-link">{tag}</a>
-            ))}
+            {
+                tags.map((tag) => (
+                    <a
+                        href={`${import.meta.env.BASE_URL}tags/${tag}`}
+                        class="tag-link"
+                    >
+                        {tag}
+                    </a>
+                ))
+            }
         </div>
     </div>
 </aside>
@@ -70,7 +84,7 @@ const tags = [...new Set(allPosts.map((post) => post.data.tags).flat())];
         border-bottom: 1px solid #eee;
         padding-bottom: 0.5rem;
     }
-    
+
     .recent-posts li:last-child {
         border-bottom: none;
     }

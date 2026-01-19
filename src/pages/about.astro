@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import ProfileImage from "../components/ProfileImage.astro";
 ---
 
 <BaseLayout title="About | Divya van Mahajan">
@@ -18,11 +19,68 @@ import BaseLayout from "../layouts/BaseLayout.astro";
                 is mostly for myself to remember what I found and how I got it
                 done. I hope it is useful to you too.
             </p>
-            <p>
-                <a href="https://linkedin.com/in/divyamahajan"
-                    >Divya van Mahajan</a
+
+            <div class="social-links">
+                <a
+                    href="https://linkedin.com/in/divyamahajan"
+                    class="linkedin-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
                 >
-            </p>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                    >
+                        <path
+                            d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
+                        ></path>
+                    </svg>
+                    <span>Divya van Mahajan</span>
+                </a>
+            </div>
+
+            <ProfileImage
+                src="https://media.licdn.com/dms/image/v2/C5603AQERWIytkRVPOg/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1649010295499?e=1770249600&v=beta&t=UK37Bhzvb7hSGkG8H7YXsaxLtzgb9HSOgnMZW0718L4"
+                alt="Divya van Mahajan"
+                size="150px"
+                align="left"
+            />
         </div>
     </article>
 </BaseLayout>
+
+<style>
+    .social-links {
+        margin: 1.5rem 0;
+    }
+
+    .linkedin-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.25rem;
+        background-color: #0077b5;
+        color: white;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: background-color 0.2s ease;
+    }
+
+    .linkedin-link:hover {
+        background-color: #005885;
+        color: white;
+        text-decoration: none;
+    }
+
+    .linkedin-link svg {
+        flex-shrink: 0;
+    }
+
+    .linkedin-link span {
+        font-size: 1rem;
+    }
+</style>

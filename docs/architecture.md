@@ -16,17 +16,29 @@ This project is a static site generated using **[Astro](https://astro.build/)**.
 /
 ├── public/             # Static assets (images, favicon)
 ├── src/
-│   ├── components/     # UI building blocks (Header, Sidebar, Footer)
+│   ├── components/     # UI building blocks
+│   │   ├── Header.astro        # Site header with navigation
+│   │   ├── Footer.astro        # Site footer with social links
+│   │   ├── Sidebar.astro       # Sidebar with widgets
+│   │   ├── Search.astro        # Client-side search component
+│   │   ├── TableOfContents.astro # Post navigation TOC
+│   │   └── ProfileImage.astro  # Circular profile image
 │   ├── content/        # Markdown content source
 │   │   └── blog/       # Blog posts
 │   │   └── config.ts   # Content Collection Schema (Zod)
 │   ├── layouts/        # Page wrappers (BaseLayout.astro)
 │   ├── pages/          # File-based routing
 │   │   ├── index.astro         # Homepage
+│   │   ├── about.astro         # About page
 │   │   ├── [category].astro    # Dynamic Category pages
 │   │   └── posts/
 │   │       └── [...slug].astro # Dynamic Post pages
 │   └── styles/         # Global CSS (Variables, Reset)
+├── docs/               # Project documentation
+│   ├── architecture.md # Technical architecture
+│   ├── spec.md         # Requirements specification
+│   ├── search.md       # Search implementation
+│   └── styling.md      # Design system
 ├── astro.config.mjs    # Astro configuration (Site URL, Base path)
 └── .github/            # CI/CD Workflows
 ```
@@ -58,7 +70,20 @@ The site is designed for **Multi-Target Deployment**.
 -   **Output Directory**: `dist`
 -   **Note on Base Path**: If serving from a distinct domain (e.g., `blog.example.com`), Cloudflare builds might need a different `base` path configuration or environment variable overrides compared to the GitHub Pages subdirectory setup.
 
-## 5. Styling Architecture
+## 5. Search Functionality
+
+The blog includes a lightweight client-side search feature implemented in `src/components/Search.astro`.
+
+**Key Features:**
+- Real-time search with debounced input (300ms)
+- Searches post titles and descriptions
+- Displays up to 5 results in a dropdown
+- Highlights matching text
+- No external dependencies (vanilla JavaScript)
+
+See [search.md](./search.md) for detailed implementation.
+
+## 6. Styling Architecture
 
 -   **Global Styles**: `src/styles/global.css` defines CSS Variables (`--color-primary`, `--font-sans`) which control the widespread look and feel (The "Mainroad" theme).
 -   **Scoped Styles**: Each `.astro` component has a `<style>` block. These styles are scoped to the component (hashed classes) to prevent side-effects, ensuring modularity.

@@ -31,7 +31,10 @@ draft: false                 # Prevents build in production
     - **Header**: Bold, capitalized site title with clear subtitle.
     - **Navigation**: High contrast bar (Dark background, white text, Red accent).
     - **Content**: Clean list of posts with thumbnails.
-    - **Sidebar** (Right): Search, Recent Posts, Tag Cloud.
+    - **Sidebar** (Right): 
+        - **Search**: Client-side search with real-time filtering
+        - **Recent Posts**: Latest 5 posts
+        - **Tag Cloud**: All tags with links
 - **Typography**: 
     - Sans-serif (Open Sans style).
     - High readability (16px+ body text).

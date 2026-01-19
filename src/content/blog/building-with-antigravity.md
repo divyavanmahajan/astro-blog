@@ -3,13 +3,16 @@ title: "Building This Blog with Antigravity"
 description: "A behind-the-scenes look at how this blog was architected and built."
 pubDate: 2026-01-19
 author: "Divya van Mahajan"
+heroImage: "/images/antigravity-hero.png"
 categories: ["Coding"]
 tags: ["antigravity", "astro", "architecture","genai"]
 draft: false
 linkedin: true
 linkedinMessage: "Building a markdown blog with Antigravity from spec to deployment."
-linkedinArticleUrl: "https://divyavanmahajan.github.io/blog/building-with-antigravity"
+linkedinArticleUrl: "https://www.linkedin.com/pulse/building-blog-antigravity-divya-van-mahajan-vkpfe/"
 ---
+
+![Futuristic workspace with AI glow and Astro.js logo](/images/antigravity-hero.png)
 
 Welcome to a meta-post about how I created my blog which is hosted at [https://vanmahajan.de](https://vanmahajan.de) and [https://divyavanmahajan.github.io/](https://divyavanmahajan.github.io/). 
 

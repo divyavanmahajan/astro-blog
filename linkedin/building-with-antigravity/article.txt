@@ -5,6 +5,8 @@ Originally published at https://divyavanmahajan.github.io
 ---
 
 
+![Futuristic workspace with AI glow and Astro.js logo](https://divyavanmahajan.github.io/images/antigravity-hero.png)
+
 Welcome to a meta-post about how I created my blog which is hosted at [https://vanmahajan.de](https://vanmahajan.de) and [https://divyavanmahajan.github.io/](https://divyavanmahajan.github.io/). 
 
 I used Antigravity to build this blog using a structured vibe-coding approach. The blog was carefully specified, architected, and then built with **Antigravity**. Here is the story of how it came to be. 

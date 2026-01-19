@@ -2,8 +2,9 @@
 title: "Welcome to My New Blog"
 description: "This is the first post on my new Astro blog."
 pubDate: 2024-01-20
-categories: ["Personal"]
-tags: ["intro", "astro"]
+categories: ["Personal","Coding"]
+tags: ["intro", "astro","coding"]
+draft: false
 ---
 
 # Welcome

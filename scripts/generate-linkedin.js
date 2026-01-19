@@ -15,20 +15,20 @@ if (!fs.existsSync(LINKEDIN_OUTPUT_DIR)) {
 async function generateLinkedInContent() {
     console.log('🚀 Starting LinkedIn content generation...');
 
-    const posts = fs.readdirSync(BLOG_CONTENT_DIR).filter(file => file.endsWith('.md'));
+    const posts = getAllPosts(BLOG_CONTENT_DIR);
     let generatedCount = 0;
 
-    for (const file of posts) {
-        const filePath = path.join(BLOG_CONTENT_DIR, file);
-        const fileContent = fs.readFileSync(filePath, 'utf-8');
+    for (const postPath of posts) {
+        const relativePath = path.relative(BLOG_CONTENT_DIR, postPath);
+        const slug = relativePath.replace(/\.md$/, '');
+        const fileContent = fs.readFileSync(postPath, 'utf-8');
         const { data: frontmatter, content: markdown } = matter(fileContent);
-        const slug = file.replace('.md', '');
 
         if (!frontmatter.linkedin) {
             continue;
         }
 
-        console.log(`\n📄 Processing: ${file}`);
+        console.log(`\n📄 Processing: ${relativePath}`);
         const outputDir = path.join(LINKEDIN_OUTPUT_DIR, slug);
         if (!fs.existsSync(outputDir)) {
             fs.mkdirSync(outputDir, { recursive: true });
@@ -38,7 +38,7 @@ async function generateLinkedInContent() {
         const absoluteMarkdown = transformUrls(markdown, slug);
 
         // 2. Generate HTML Article
-        const htmlArticle = generateHtmlArticle(frontmatter, absoluteMarkdown);
+        const htmlArticle = generateHtmlArticle(frontmatter, absoluteMarkdown, slug);
         fs.writeFileSync(path.join(outputDir, 'article.html'), htmlArticle);
 
         // 3. Generate Rich Text Article (stripped of most HTML)
@@ -61,17 +61,32 @@ async function generateLinkedInContent() {
     console.log(`\n✅ Finished! Generated LinkedIn content for ${generatedCount} posts.`);
 }
 
+function getAllPosts(dirPath, arrayOfFiles = []) {
+    const files = fs.readdirSync(dirPath);
+
+    files.forEach(file => {
+        const filePath = path.join(dirPath, file);
+        if (fs.statSync(filePath).isDirectory()) {
+            arrayOfFiles = getAllPosts(filePath, arrayOfFiles);
+        } else if (file.endsWith('.md')) {
+            arrayOfFiles.push(filePath);
+        }
+    });
+
+    return arrayOfFiles;
+}
+
 function transformUrls(markdown, slug) {
     let content = markdown;
 
-    // Transform images: ![caption](/path) -> ![caption](https://vanmahajan.de/path)
+    // Transform images: ![caption](/path) -> ![caption](https://divyavanmahajan.github.io/path)
     content = content.replace(/!\[([^\]]*)\]\((?!http)(\/[^\)]+)\)/g, `![$1](${SITE_URL}$2)`);
     content = content.replace(/!\[([^\]]*)\]\((?!http)(\.\/[^\)]+)\)/g, (match, p1, p2) => {
         const cleanedPath = p2.replace('./', '');
         return `![${p1}](${SITE_URL}/blog/${slug}/${cleanedPath})`;
     });
 
-    // Transform links: [text](/path) -> [text](https://vanmahajan.de/path)
+    // Transform links: [text](/path) -> [text](https://divyavanmahajan.github.io/path)
     content = content.replace(/\[([^\]]*)\]\((?!http)(\/[^\)]+)\)/g, `[$1](${SITE_URL}$2)`);
     content = content.replace(/\[([^\]]*)\]\((?!http)(\.\/[^\)]+)\)/g, (match, p1, p2) => {
         const cleanedPath = p2.replace('./', '');
@@ -84,7 +99,7 @@ function transformUrls(markdown, slug) {
     return content;
 }
 
-function generateHtmlArticle(frontmatter, markdown) {
+function generateHtmlArticle(frontmatter, markdown, slug) {
     const htmlBody = marked.parse(markdown);
 
     return `<!DOCTYPE html>
@@ -95,7 +110,7 @@ function generateHtmlArticle(frontmatter, markdown) {
 </head>
 <body>
     <h1>${frontmatter.title}</h1>
-    <p><em>Originally published at <a href="${SITE_URL}/blog/${frontmatter.title.toLowerCase().replace(/ /g, '-')}">${SITE_URL}</a></em></p>
+    <p><em>Originally published at <a href="${SITE_URL}/blog/${slug}">${SITE_URL}</a></em></p>
     <hr>
     ${htmlBody}
 </body>

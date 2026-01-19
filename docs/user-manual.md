@@ -12,8 +12,10 @@ All blog posts are Markdown files located in `src/content/blog/`.
 ### Step-by-Step
 1.  Open your project in VS Code.
 2.  Navigate to `src/content/blog/`.
-3.  Create a new file with a `.md` extension (e.g., `my-new-post.md`).
-4.  Copy and paste the following **Frontmatter** at the top of the file:
+3.  Navigate to `src/content/blog/`.
+4.  Create a folder for the current year (e.g., `2026/`) and month (e.g., `01/`) if they don't exist.
+5.  Create a new file with a `.md` extension inside the month folder (e.g., `my-new-post.md`).
+6.  Copy and paste the following **Frontmatter** at the top of the file:
 
 ```yaml
 ---
@@ -113,7 +115,7 @@ You can automatically generate LinkedIn-ready articles and posts from your blog 
     -   Run `npm run build` (automatic generation after build).
     -   Or run `npm run linkedin` to just generate the LinkedIn files.
 4.  **Find your content**:
-    -   Navigate to the `linkedin/[post-slug]/` directory.
+    -   Navigate to the `linkedin/YYYY/MM/[post-slug]/` directory.
     -   `article.html`: Clean HTML for LinkedIn's HTML editor.
     -   `article.txt`: Formatted Markdown for LinkedIn's rich text article editor.
     -   `post.txt`: Short post text to announce your article.

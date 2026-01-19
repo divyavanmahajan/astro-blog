@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Building This Blog with Antigravity</title>
+</head>
+<body>
+    <h1>Building This Blog with Antigravity</h1>
+    <p><em>Originally published at <a href="https://divyavanmahajan.github.io/blog/building-this-blog-with-antigravity">https://divyavanmahajan.github.io</a></em></p>
+    <hr>
+    <p>Welcome to a meta-post about how I created my blog which is hosted at <a href="https://vanmahajan.de">https://vanmahajan.de</a> and <a href="https://divyavanmahajan.github.io/">https://divyavanmahajan.github.io/</a>. </p>
+<p>I used Antigravity to build this blog using a structured vibe-coding approach. The blog was carefully specified, architected, and then built with <strong>Antigravity</strong>. Here is the story of how it came to be. </p>
+<h2>The Specification</h2>
+<p>Before writing a single line of code, I defined exactly what this blog should be. I wanted a lightweight, easy-to-manage site that prioritizes performance. </p>
+<p>Key requirements from our <a href="https://github.com/divyavanmahajan/astro-blog/blob/main/docs/spec.md">Spec</a>:</p>
+<ul>
+<li><strong>Workflow</strong>: Direct markdown editing in VS Code. No complex headless CMS.</li>
+<li><strong>Theme</strong>: A clean, &quot;Mainroad&quot; inspired design with a high-contrast navigation bar and a content-focused layout.</li>
+<li><strong>Structure</strong>: A clear hierarchy with Categories (like &quot;Coding&quot;) and Tags for easy navigation.</li>
+</ul>
+<h2>The Architecture</h2>
+<p>I chose <strong><a href="https://astro.build/">Astro</a></strong> for its &quot;Zero JS by default&quot; philosophy. This ensures the site is incredibly fast.</p>
+<h3>Core Stack</h3>
+<ul>
+<li><strong>Framework</strong>: Astro v4</li>
+<li><strong>Styling</strong>: Vanilla CSS with scoped components. Also see <a href="https://github.com/divyavanmahajan/astro-blog/blob/main/docs/styling.md">Styling Doc</a>.</li>
+<li><strong>Content</strong>: Type-safe Markdown using Astro Content Collections.</li>
+</ul>
+<p>As detailed in our <a href="https://github.com/divyavanmahajan/astro-blog/blob/main/docs/architecture.md">Architecture Doc</a>, the project structure is organized to keep content separate from logic:</p>
+<pre><code class="language-text">src/
+├── components/     # UI building blocks (Header, Sidebar)
+├── content/        # Markdown posts live here
+├── layouts/        # Page wrappers
+├── pages/          # File-based routing
+└── styles/         # Global styles
+</code></pre>
+<h3>Deployment</h3>
+<p>We designed a robust multi-target deployment pipeline. The site is automatically built and deployed to <strong>GitHub Pages</strong> (our primary host) and <strong>Cloudflare Pages</strong> simultaneously whenever code is pushed to the <code>main</code> branch.</p>
+<h2>The Authoring Workflow</h2>
+<p>As a user, you can simply add a new markdown file to <code>src/content/blog/</code> and the deployment workflow will automatically build and deploy the site to both GitHub Pages and Cloudflare Pages. But I have a poor memory, so it made sense to write a user manual. As described in the <a href="https://github.com/divyavanmahajan/astro-blog/blob/main/docs/user-manual.md">User Manual</a>, creating a post is as simple as adding a new Markdown file to <code>src/content/blog/</code>.</p>
+<pre><code class="language-yaml">---
+title: &quot;My New Post&quot;
+description: &quot;A short summary.&quot;
+pubDate: 2024-01-20
+categories: [&quot;Coding&quot;]
+---
+</code></pre>
+<p>Astro&#39;s content collections validate this frontmatter automatically, ensuring we never accidentally break the build with a missing date or title.</p>
+<h2>The Deployment Workflow</h2>
+<p>The deployment workflow is handled by GitHub Actions, which is configured in the <code>.github/workflows/deploy.yml</code> file. The workflow is triggered on every push to the <code>main</code> branch and builds the site using Astro, then deploys it to both <a href="https://github.com/divyavanmahajan/astro-blog/blob/main/docs/deploy-github.md">GitHub Pages</a> and <a href="https://github.com/divyavanmahajan/astro-blog/blob/main/docs/deploy-cloudflare.md">Cloudflare Pages</a>.</p>
+<p>Currently accessible at <a href="https://divyavanmahajan.github.io/">https://divyavanmahajan.github.io/</a> and <a href="https://vanmahajan.de">https://vanmahajan.de</a>.</p>
+<h2>Accessing the Local Site Externally</h2>
+<p>During development, you might want to access your local Astro dev server from another device or share it with others. SSH tunneling services like <a href="https://tuns.sh">tuns.sh</a> make this easy, but Vite (which powers Astro&#39;s dev server) blocks requests from unknown host headers by default.</p>
+<p>To allow external access through a custom domain, add the domain to Vite&#39;s <code>allowedHosts</code> configuration in <code>astro.config.mjs</code>:</p>
+<pre><code class="language-javascript">export default defineConfig({
+    site: process.env.SITE || &#39;https://divyavanmahajan.github.io&#39;,
+    base: process.env.BASE || &#39;/&#39;,
+    vite: {
+        server: {
+            allowedHosts: [&#39;picodvm-blog.tuns.sh&#39;, &#39;.tuns.sh&#39;, &#39;localhost&#39;, &#39;127.0.0.1&#39;],
+        },
+    },
+});
+</code></pre>
+<p>Then start a SSH tunnel to access this local site from the internet using <a href="https://tuns.sh">tuns.sh</a>, which is a great tunneling service that uses SSH. The tunnel URL is <code>picodvm-blog.tuns.sh</code>:</p>
+<pre><code class="language-bash">ssh -R blog:80:localhost:4321 ash.tuns.sh
+</code></pre>
+<p>The <code>allowedHosts</code> configuration explicitly allows requests with the tunnel&#39;s host header, preventing the &quot;Blocked request&quot; error that would otherwise occur.</p>
+<h2>Adding Search Functionality</h2>
+<p>One feature I wanted was a working search to help readers find content. The sidebar had a disabled search input that was just a placeholder, so I asked Antigravity to implement it.</p>
+<h3>Implementation Approach</h3>
+<p>Rather than adding a heavy search library, we went with a lightweight client-side solution:</p>
+<ul>
+<li><strong>Search Component</strong> (<code>Search.astro</code>): A custom component that filters posts in real-time</li>
+<li><strong>No Dependencies</strong>: Uses vanilla JavaScript with debounced input (300ms)</li>
+<li><strong>Search Scope</strong>: Searches through post titles and descriptions</li>
+<li><strong>User Experience</strong>: Dropdown results with highlighted matches, keyboard support (Escape to close)</li>
+</ul>
+<p>The implementation collects all published posts at build time and passes them to the client-side script. When users type, the search filters posts and displays up to 5 results with matching text highlighted in yellow.</p>
+<h3>Why This Approach?</h3>
+<p>For a small blog with a limited number of posts, client-side search is perfect:</p>
+<ul>
+<li><strong>Fast</strong>: No server requests needed</li>
+<li><strong>Simple</strong>: No external dependencies or build-time indexing</li>
+<li><strong>Maintainable</strong>: Easy to understand and modify</li>
+<li><strong>Sufficient</strong>: Searching titles and descriptions covers most use cases</li>
+</ul>
+<p>If the blog grows significantly, we could upgrade to a more robust solution like Pagefind, but for now, this lightweight approach works great.</p>
+<h2>Conclusion</h2>
+<p>Building this blog with Antigravity was an interesting exercise. On one hand Antigravity is rapidly able to create 90% of the code and site, but it struggled trying to correct the CSS styling. If it was a person, I would be scratching my head, wondering how such a smart programmer struggled with simple problems but did great at complex problems. Switching the models gets you a different programming persona, so mixing them up is a good idea. Cursor does a better job at not getting stuck. I had to step in an hint or increase to a thinking model to get Antigravity to move along. </p>
+<p>In the end, it was a good experience and I am happy with the result. </p>
+<p>By keeping the blog simple, typed, and automated, I can focus on what matters most: the content.</p>
+<h2>The Future</h2>
+<p>I plan to continue using Astro for this blog, and I will keep updating it with new posts and features. I will also continue to use GitHub Actions for deployment, and I will keep using Cloudflare Pages for hosting.</p>
+
+</body>
+</html>

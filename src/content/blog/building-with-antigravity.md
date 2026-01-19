@@ -89,13 +89,16 @@ ssh -R blog:80:localhost:4321 ash.tuns.sh
 
 This configuration explicitly allows requests with the tunnel's host header, preventing the "Blocked request" error that would otherwise occur.
 
-## 6. The Future
+
+## 6. Conclusion
+
+Building this blog with Antigravity was an interesting exercise. On one hand Antigravity is rapidly able to create 90% of the code and site, but it struggled trying to correct the CSS styling. If it was a person, I would be scratching my head, wondering how such a smart programmer struggled with simple problems but did great at complex problems. Switching the models gets you a different programming persona, so mixing them up is a good idea. Cursor does a better job at not getting stuck. I had to step in an hint or increase to a thinking model to get Antigravity to move along. 
+
+In the end, it was a good experience and I am happy with the result. 
+
+By keeping the blog simple, typed, and automated, I can focus on what matters most: the content.
+
+## 7. The Future
 
 
 I plan to continue using Astro for this blog, and I will keep updating it with new posts and features. I will also continue to use GitHub Actions for deployment, and I will keep using Cloudflare Pages for hosting.
-
-## Conclusion
-
-Building this blog with Antigravity was an interesting exercise. On one hand Antigravity is rapidly able to create 90% of the code and site, but it struggled trying to correct the CSS styling. If it was a person, I would be scracthing my head, wondering how such a smart programmer struggled with simple problems but did great at complex problems. 
-
-By keeping the blog simple, typed, and automated, I can focus on what matters most: the content.

@@ -8,7 +8,9 @@ tags: ["antigravity", "astro", "architecture","genai"]
 draft: false
 ---
 
-Welcome to a meta-post about how I created this blog. I used a structured vibe-coding approach with Google Antigravity. The blog was carefully specified, architected, and built using **Antigravity**. Here is the story of how it came to be. In the text below - "we" refers to me and Antigravity, since this was a pair programming exercise.
+Welcome to a meta-post about how I created my blog which is hosted at [https://vanmahajan.de](https://vanmahajan.de) and [https://divyavanmahajan.github.io/](https://divyavanmahajan.github.io/). 
+
+I used Antigravity to build this blog using a structured vibe-coding approach. The blog was carefully specified, architected, and then built with **Antigravity**. Here is the story of how it came to be. 
 
 ## The Specification
 
@@ -81,13 +83,13 @@ export default defineConfig({
 });
 ```
 
-Then create an SSH tunnel:
+Then start a SSH tunnel to access this local site from the internet using [tuns.sh](https://tuns.sh), which is a great tunneling service that uses SSH. The tunnel URL is `picodvm-blog.tuns.sh`:
 
 ```bash
 ssh -R blog:80:localhost:4321 ash.tuns.sh
 ```
 
-This configuration explicitly allows requests with the tunnel's host header, preventing the "Blocked request" error that would otherwise occur.
+The `allowedHosts` configuration explicitly allows requests with the tunnel's host header, preventing the "Blocked request" error that would otherwise occur.
 
 ## Adding Search Functionality
 

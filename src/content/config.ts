@@ -10,10 +10,13 @@ const blog = defineCollection({
 		pubDate: z.coerce.date(),
 		updatedDate: z.coerce.date().optional(),
 		heroImage: z.string().optional(),
-        categories: z.array(z.string()).default(['General']),
-        tags: z.array(z.string()).default([]),
-        draft: z.boolean().default(false),
-        author: z.string().optional(),
+		categories: z.array(z.string()).default(['General']),
+		tags: z.array(z.string()).default([]),
+		draft: z.boolean().default(false),
+		author: z.string().optional(),
+		linkedin: z.boolean().default(false),
+		linkedinMessage: z.string().optional(),
+		linkedinArticleUrl: z.string().optional(),
 	}),
 });
 

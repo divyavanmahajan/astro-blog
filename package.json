@@ -4,11 +4,14 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && npm run linkedin",
+    "linkedin": "node scripts/generate-linkedin.js",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.16.11"
+    "astro": "^5.16.11",
+    "gray-matter": "^4.0.3",
+    "marked": "^17.0.1"
   }
 }

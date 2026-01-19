@@ -13,7 +13,7 @@ const posts = (await getCollection('blog'))
             <article class="post-entry">
                 <header class="entry-header">
                     <h2 class="entry-title">
-                        <a href={`/posts/${post.slug}/`}>{post.data.title}</a>
+                        <a href={`${import.meta.env.BASE_URL}posts/${post.slug}/`}>{post.data.title}</a>
                     </h2>
                     <div class="entry-meta">
                         <span class="posted-on">
@@ -35,7 +35,7 @@ const posts = (await getCollection('blog'))
                 </div>
                 
                 <footer class="entry-footer">
-                    <a href={`/posts/${post.slug}/`} class="read-more">Read more...</a>
+                    <a href={`${import.meta.env.BASE_URL}posts/${post.slug}/`} class="read-more">Read more...</a>
                 </footer>
             </article>
         ))}

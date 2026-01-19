@@ -39,7 +39,7 @@ const { Content } = await post.render();
             <div class="post-tags">
                 Tags: 
                 {post.data.tags.map(tag => (
-                   <a href={`/tags/${tag}`}>{tag}</a> 
+                   <a href={`${import.meta.env.BASE_URL}tags/${tag}`}>{tag}</a> 
                 ))}
             </div>
         </footer>

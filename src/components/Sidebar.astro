@@ -25,7 +25,7 @@ const tags = [...new Set(allPosts.map((post) => post.data.tags).flat())];
         <ul>
             {posts.map((post) => (
                 <li>
-                    <a href={`/posts/${post.slug}/`}>{post.data.title}</a>
+                    <a href={`${import.meta.env.BASE_URL}posts/${post.slug}/`}>{post.data.title}</a>
                 </li>
             ))}
         </ul>
@@ -36,7 +36,7 @@ const tags = [...new Set(allPosts.map((post) => post.data.tags).flat())];
         <h3 class="widget-title">Tags</h3>
         <div class="tags">
             {tags.map((tag) => (
-                <a href={`/tags/${tag}`} class="tag-link">{tag}</a>
+                <a href={`${import.meta.env.BASE_URL}tags/${tag}`} class="tag-link">{tag}</a>
             ))}
         </div>
     </div>

@@ -6,18 +6,21 @@
 </head>
 <body>
     <h1>Building This Blog with Antigravity</h1>
-    <p><em>Originally published at <a href="https://divyavanmahajan.github.io/blog/building-this-blog-with-antigravity">https://divyavanmahajan.github.io</a></em></p>
+    <p><em>Originally published at <a href="https://divyavanmahajan.github.io/blog/2026/01/building-with-antigravity">https://divyavanmahajan.github.io</a></em></p>
     <hr>
     <p><img src="https://divyavanmahajan.github.io/images/antigravity-hero.png" alt="Futuristic workspace with AI glow and Astro.js logo"></p>
+<p>I am passionate about building things and learning new things. I was inspired by <a href="https://glukhov.org">Rost Glukhov</a> and <a href="https://simonwillison.net">Simon Willison</a>, to record and share what I&#39;ve learnt. I set myself a goal to create a blog infrastructure that was low maintenance and easy to use.</p>
 <p>Welcome to a meta-post about how I created my blog which is hosted at <a href="https://vanmahajan.de">https://vanmahajan.de</a> and <a href="https://divyavanmahajan.github.io/">https://divyavanmahajan.github.io/</a>. </p>
 <p>I used Antigravity to build this blog using a structured vibe-coding approach. The blog was carefully specified, architected, and then built with <strong>Antigravity</strong>. Here is the story of how it came to be. </p>
 <h2>The Specification</h2>
-<p>Before writing a single line of code, I defined exactly what this blog should be. I wanted a lightweight, easy-to-manage site that prioritizes performance. </p>
-<p>Key requirements from our <a href="https://github.com/divyavanmahajan/astro-blog/blob/main/docs/spec.md">Spec</a>:</p>
+<p>I started by working with Antigravity to create a <a href="https://github.com/divyavanmahajan/astro-blog/blob/main/docs/spec.md">spec.md</a> file. This used a structured approach to define the requirements for the blog. I started with a simple idea and got Antigravity to refine it by asking clarifying questions and providing suggestions. So before writing a single line of code, I defined exactly what this blog should be. I wanted a lightweight, easy-to-manage site that prioritizes performance. </p>
+<p>Key requirements from the <a href="https://github.com/divyavanmahajan/astro-blog/blob/main/docs/spec.md">Spec</a>:</p>
 <ul>
 <li><strong>Workflow</strong>: Direct markdown editing in VS Code. No complex headless CMS.</li>
 <li><strong>Theme</strong>: A clean, &quot;Mainroad&quot; inspired design with a high-contrast navigation bar and a content-focused layout.</li>
 <li><strong>Structure</strong>: A clear hierarchy with Categories (like &quot;Coding&quot;) and Tags for easy navigation.</li>
+<li><strong>Deployment</strong>: Automatic deployment to GitHub Pages and Cloudflare Pages.</li>
+<li><strong>LinkedIn Integration</strong>: Manual sharing of new posts to LinkedIn.</li>
 </ul>
 <h2>The Architecture</h2>
 <p>I chose <strong><a href="https://astro.build/">Astro</a></strong> for its &quot;Zero JS by default&quot; philosophy. This ensures the site is incredibly fast.</p>
@@ -36,7 +39,7 @@
 └── styles/         # Global styles
 </code></pre>
 <h3>Deployment</h3>
-<p>We designed a robust multi-target deployment pipeline. The site is automatically built and deployed to <strong>GitHub Pages</strong> (our primary host) and <strong>Cloudflare Pages</strong> simultaneously whenever code is pushed to the <code>main</code> branch.</p>
+<p>We designed a robust multi-target deployment pipeline. The site is automatically built and deployed to <strong>GitHub Pages</strong> (our primary host) and <strong>Cloudflare Pages</strong> simultaneously whenever code is pushed to the <code>main</code> branch. At the same time, LinkedIn formatted markdown is also generated in the <code>linkedin</code> directory.</p>
 <h2>The Authoring Workflow</h2>
 <p>As a user, you can simply add a new markdown file to <code>src/content/blog/</code> and the deployment workflow will automatically build and deploy the site to both GitHub Pages and Cloudflare Pages. But I have a poor memory, so it made sense to write a user manual. As described in the <a href="https://github.com/divyavanmahajan/astro-blog/blob/main/docs/user-manual.md">User Manual</a>, creating a post is as simple as adding a new Markdown file to <code>src/content/blog/</code>.</p>
 <pre><code class="language-yaml">---

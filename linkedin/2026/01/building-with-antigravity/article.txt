@@ -7,18 +7,22 @@ Originally published at https://divyavanmahajan.github.io
 
 ![Futuristic workspace with AI glow and Astro.js logo](https://divyavanmahajan.github.io/images/antigravity-hero.png)
 
+I am passionate about building things and learning new things. I was inspired by [Rost Glukhov](https://glukhov.org) and [Simon Willison](https://simonwillison.net), to record and share what I've learnt. I set myself a goal to create a blog infrastructure that was low maintenance and easy to use.
+                
 Welcome to a meta-post about how I created my blog which is hosted at [https://vanmahajan.de](https://vanmahajan.de) and [https://divyavanmahajan.github.io/](https://divyavanmahajan.github.io/). 
 
 I used Antigravity to build this blog using a structured vibe-coding approach. The blog was carefully specified, architected, and then built with **Antigravity**. Here is the story of how it came to be. 
 
 ## The Specification
 
-Before writing a single line of code, I defined exactly what this blog should be. I wanted a lightweight, easy-to-manage site that prioritizes performance. 
+I started by working with Antigravity to create a [spec.md](https://github.com/divyavanmahajan/astro-blog/blob/main/docs/spec.md) file. This used a structured approach to define the requirements for the blog. I started with a simple idea and got Antigravity to refine it by asking clarifying questions and providing suggestions. So before writing a single line of code, I defined exactly what this blog should be. I wanted a lightweight, easy-to-manage site that prioritizes performance. 
 
-Key requirements from our [Spec](https://github.com/divyavanmahajan/astro-blog/blob/main/docs/spec.md):
+Key requirements from the [Spec](https://github.com/divyavanmahajan/astro-blog/blob/main/docs/spec.md):
 - **Workflow**: Direct markdown editing in VS Code. No complex headless CMS.
 - **Theme**: A clean, "Mainroad" inspired design with a high-contrast navigation bar and a content-focused layout.
 - **Structure**: A clear hierarchy with Categories (like "Coding") and Tags for easy navigation.
+- **Deployment**: Automatic deployment to GitHub Pages and Cloudflare Pages.
+- **LinkedIn Integration**: Manual sharing of new posts to LinkedIn.
 
 ## The Architecture
 
@@ -41,7 +45,7 @@ src/
 ```
 
 ### Deployment
-We designed a robust multi-target deployment pipeline. The site is automatically built and deployed to **GitHub Pages** (our primary host) and **Cloudflare Pages** simultaneously whenever code is pushed to the `main` branch.
+We designed a robust multi-target deployment pipeline. The site is automatically built and deployed to **GitHub Pages** (our primary host) and **Cloudflare Pages** simultaneously whenever code is pushed to the `main` branch. At the same time, LinkedIn formatted markdown is also generated in the `linkedin` directory.
 
 ## The Authoring Workflow
 

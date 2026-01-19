@@ -127,11 +127,13 @@ All generated LinkedIn content will be stored in:
 
 ```
 linkedin/
-├── [blog-post-slug]/
-│   ├── article.html          # HTML version for LinkedIn HTML editor
-│   ├── article.txt           # Rich text version for visual editor
-│   ├── post.txt              # LinkedIn post text
-│   └── update-summary.txt    # Update summary (if article was updated)
+├── 2026/
+│   ├── 01/
+│   │   ├── building-with-antigravity/
+│   │   │   ├── article.html          # HTML version for LinkedIn HTML editor
+│   │   │   ├── article.txt           # Rich text version for visual editor
+│   │   │   ├── post.txt              # LinkedIn post text
+│   │   │   └── update-summary.txt    # Update summary (if article was updated)
 ```
 
 ### File Naming

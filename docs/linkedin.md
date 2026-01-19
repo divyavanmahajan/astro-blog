@@ -68,11 +68,11 @@ The generated article should include:
    - Table of contents (converted to LinkedIn-compatible format)
    - All body content
    - Code blocks (formatted for LinkedIn)
-   - Images (with absolute URLs to vanmahajan.de)
+   - Images (with absolute URLs to divyavanmahajan.github.io)
 
 2. **Format conversions**:
    - Markdown → LinkedIn-compatible HTML
-   - Relative image URLs → Absolute URLs (`https://vanmahajan.de/...`)
+   - Relative image URLs → Absolute URLs (`https://divyavanmahajan.github.io/...`)
    - Code blocks → LinkedIn code formatting
    - Table of contents component → Plain HTML list with anchor links
 
@@ -185,8 +185,8 @@ Add to `package.json`:
 ### Images
 
 - **Relative URLs**: Convert to absolute URLs
-  - `/images/foo.png` → `https://vanmahajan.de/images/foo.png`
-  - `./foo.png` → `https://vanmahajan.de/blog/[slug]/foo.png`
+  - `/images/foo.png` → `https://divyavanmahajan.github.io/images/foo.png`
+  - `./foo.png` → `https://divyavanmahajan.github.io/blog/[slug]/foo.png`
 - **Already absolute URLs**: Keep as-is
 - **Missing images**: Log warning, include broken link in output
 
@@ -204,8 +204,8 @@ Add to `package.json`:
 ### Links
 
 - Convert relative links to absolute:
-  - `/about` → `https://vanmahajan.de/about`
-  - `./other-post` → `https://vanmahajan.de/blog/other-post`
+  - `/about` → `https://divyavanmahajan.github.io/about`
+  - `./other-post` → `https://divyavanmahajan.github.io/blog/other-post`
 - External links: Keep as-is
 
 ### Table of Contents
@@ -264,7 +264,7 @@ Add to `package.json`:
 3. Generate content for a post with code blocks
 4. Generate content for a post with table of contents
 5. Test update flow (regenerate after edit)
-6. Verify all URLs are absolute and point to vanmahajan.de
+6. Verify all URLs are absolute and point to divyavanmahajan.github.io
 
 ### Automated Tests
 
@@ -292,7 +292,7 @@ The implementation will be considered successful when:
 1. ✅ Blog posts with `linkedin: true` automatically generate LinkedIn content during build
 2. ✅ Generated content includes both HTML and rich text formats
 3. ✅ Generated post text is ready to copy and paste
-4. ✅ All images use absolute vanmahajan.de URLs
+4. ✅ All images use absolute divyavanmahajan.github.io URLs
 5. ✅ Code blocks are properly formatted for LinkedIn
 6. ✅ Table of contents is converted to plain HTML
 7. ✅ Update summaries are generated for posts with existing LinkedIn URLs

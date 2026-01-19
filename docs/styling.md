@@ -10,7 +10,7 @@ We use a three-tier typography system with distinct fonts for the site title, he
     -   Weight: `500` (Medium)
     -   Usage: Main site heading (`.site-title`)
     -   Purpose: Classic, elegant serif for the primary brand element.
--   **Headings**: [Josefin Sans](https://fonts.google.com/specimen/Josefin+Sans)
+-   **Headings**: [Open Sans](https://fonts.google.com/specimen/Open+Sans)
     -   Weight: `800` (ExtraBold)
     -   Usage: `h1` through `h6`, table of contents
     -   Purpose: Strong, geometric headers that stand out.
@@ -23,7 +23,7 @@ We use a three-tier typography system with distinct fonts for the site title, he
 ```css
 :root {
     --font-title: 'Times New Roman', serif;
-    --font-header: 'Josefin Sans', sans-serif;
+    --font-header: 'Open Sans', sans-serif;
     --font-body: 'Inter', sans-serif;
     --weight-title: 500;
     --weight-header: 800;

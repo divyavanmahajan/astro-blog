@@ -89,8 +89,32 @@ ssh -R blog:80:localhost:4321 ash.tuns.sh
 
 This configuration explicitly allows requests with the tunnel's host header, preventing the "Blocked request" error that would otherwise occur.
 
+## 6. Adding Search Functionality
 
-## 6. Conclusion
+One feature I wanted was a working search to help readers find content. The sidebar had a disabled search input that was just a placeholder, so I asked Antigravity to implement it.
+
+### Implementation Approach
+
+Rather than adding a heavy search library, we went with a lightweight client-side solution:
+
+- **Search Component** (`Search.astro`): A custom component that filters posts in real-time
+- **No Dependencies**: Uses vanilla JavaScript with debounced input (300ms)
+- **Search Scope**: Searches through post titles and descriptions
+- **User Experience**: Dropdown results with highlighted matches, keyboard support (Escape to close)
+
+The implementation collects all published posts at build time and passes them to the client-side script. When users type, the search filters posts and displays up to 5 results with matching text highlighted in yellow.
+
+### Why This Approach?
+
+For a small blog with a limited number of posts, client-side search is perfect:
+- **Fast**: No server requests needed
+- **Simple**: No external dependencies or build-time indexing
+- **Maintainable**: Easy to understand and modify
+- **Sufficient**: Searching titles and descriptions covers most use cases
+
+If the blog grows significantly, we could upgrade to a more robust solution like Pagefind, but for now, this lightweight approach works great.
+
+## 7. Conclusion
 
 Building this blog with Antigravity was an interesting exercise. On one hand Antigravity is rapidly able to create 90% of the code and site, but it struggled trying to correct the CSS styling. If it was a person, I would be scratching my head, wondering how such a smart programmer struggled with simple problems but did great at complex problems. Switching the models gets you a different programming persona, so mixing them up is a good idea. Cursor does a better job at not getting stuck. I had to step in an hint or increase to a thinking model to get Antigravity to move along. 
 
@@ -98,7 +122,7 @@ In the end, it was a good experience and I am happy with the result.
 
 By keeping the blog simple, typed, and automated, I can focus on what matters most: the content.
 
-## 7. The Future
+## 8. The Future
 
 
 I plan to continue using Astro for this blog, and I will keep updating it with new posts and features. I will also continue to use GitHub Actions for deployment, and I will keep using Cloudflare Pages for hosting.

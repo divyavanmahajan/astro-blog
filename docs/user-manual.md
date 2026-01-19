@@ -1,7 +1,7 @@
 # Astro Blog User Manual
 
 This guide explains how to manage content on your Astro blog, hosted at:
-**[https://divyavanmahajan.github.io/blog/](https://divyavanmahajan.github.io/blog/)**
+**[https://divyavanmahajan.github.io/](https://divyavanmahajan.github.io/)**
 
 ---
 
@@ -32,7 +32,7 @@ draft: false               # Set to true to hide from the live site
 
 ### Content Tips
 -   **Code Blocks**: Use triple backticks (\`\`\`) to create syntax-highlighted code blocks.
--   **Internal Links**: Use standard markdown links `[Title](/blog/path/to/page)`.
+-   **Internal Links**: Use standard markdown links `[Title](/path/to/page)`.
 
 ---
 
@@ -43,20 +43,20 @@ To include images, PDFs, or other downloadable files in your posts, follow these
 ### 1. Store the File
 Place your file in the **`public/`** directory. You can organize them into subfolders (e.g., `public/images/`, `public/docs/`).
 
--   **Images**: Place images in `public/images/` and reference them like `/blog/images/filename.jpg` (Must include the `/blog` prefix).
+-   **Images**: Place images in `public/images/` and reference them like `/images/filename.jpg`.
 
 
 **Image Syntax**:
 ```markdown
-![Description of image](/blog/images/my-photo.jpg)
+![Description of image](/images/my-photo.jpg)
 ```
 
 **File Download Link**:
 ```markdown
-[Download PDF](/blog/docs/my-document.pdf)
+[Download PDF](/docs/my-document.pdf)
 ```
 
-> **Important**: Do not start paths with `../` or `src/`. Always use the absolute path starting with `/blog/` which maps to your `public/` folder.
+> **Important**: Do not start paths with `../` or `src/`. Always use the absolute path starting with `/` which maps to your `public/` folder.
 
 ---
 
@@ -89,7 +89,7 @@ If your changes aren't showing up, check the following:
 -   **Frontmatter Errors**: If the build fails, check your `.md` file. Ensure `pubDate` is a valid date and `title` is present.
 -   **Broken Links**: Ensure internal links use the correct base path. 
     -   *Incorrect*: `[Link](/about)`
-    -   *Correct*: `[Link](/blog/about)`
+    -   *Correct*: `[Link](/about)`
 -   **Draft Mode**: If the post is missing locally or remotely, check if `draft: true` is set in the frontmatter.
 
 ### 3. Local Preview
@@ -98,4 +98,4 @@ Open your terminal and run:
 ```bash
 npm run dev
 ```
-Open the localhost link shown (usually `http://localhost:4321/blog/`).
+Open the localhost link shown (usually `http://localhost:4321/`).

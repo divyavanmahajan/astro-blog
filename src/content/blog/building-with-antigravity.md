@@ -2,6 +2,7 @@
 title: "Building This Blog with Antigravity"
 description: "A behind-the-scenes look at how this blog was architected and built."
 pubDate: 2026-01-19
+author: "Divya van Mahajan"
 categories: ["Coding", "Meta"]
 tags: ["antigravity", "astro", "architecture"]
 draft: false
@@ -42,7 +43,7 @@ We designed a robust multi-target deployment pipeline. The site is automatically
 
 ## 3. The Authoring Workflow
 
-Writing for this blog is pure developer joy. As described in the [User Manual](https://github.com/divyavanmahajan/astro-blog/blob/main/docs/user-manual.md), creating a post is as simple as adding a new Markdown file to `src/content/blog/`.
+As a user, you can simply add a new markdown file to `src/content/blog/` and the deployment workflow will automatically build and deploy the site to both GitHub Pages and Cloudflare Pages. But I have a poor memory, so it made sense to write a user manual. As described in the [User Manual](https://github.com/divyavanmahajan/astro-blog/blob/main/docs/user-manual.md), creating a post is as simple as adding a new Markdown file to `src/content/blog/`.
 
 ```yaml
 ---
@@ -54,6 +55,16 @@ categories: ["Coding"]
 ```
 
 Astro's content collections validate this frontmatter automatically, ensuring we never accidentally break the build with a missing date or title.
+
+## 4. The Deployment Workflow
+
+The deployment workflow is handled by GitHub Actions, which is configured in the `.github/workflows/deploy.yml` file. The workflow is triggered on every push to the `main` branch and builds the site using Astro, then deploys it to both [GitHub Pages](https://github.com/divyavanmahajan/astro-blog/blob/main/docs/deploy-github.md) and [Cloudflare Pages](https://github.com/divyavanmahajan/astro-blog/blob/main/docs/deploy-cloudflare.md).
+
+Currently accessible at [https://divyavanmahajan.github.io/](https://divyavanmahajan.github.io/) and [https://vanmahajan.de](https://vanmahajan.de).
+
+## 5. The Future
+
+I plan to continue using Astro for this blog, and I will keep updating it with new posts and features. I will also continue to use GitHub Actions for deployment, and I will keep using Cloudflare Pages for hosting.
 
 ## Conclusion
 

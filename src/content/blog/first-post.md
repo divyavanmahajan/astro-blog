@@ -1,7 +1,8 @@
 ---
 title: "Welcome to My New Blog"
 description: "This is the first post on my new Astro blog."
-pubDate: 2024-01-20
+pubDate: 2026-01-19
+author: "Divya van Mahajan"
 categories: ["Personal","Coding"]
 tags: ["intro", "astro","coding"]
 draft: false

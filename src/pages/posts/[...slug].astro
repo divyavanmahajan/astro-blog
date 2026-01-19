@@ -58,9 +58,6 @@ const { Content } = await post.render();
         margin-bottom: 0.5rem;
     }
 
-    .post-meta {
-        color: var(--color-text-light);
-        margin-bottom: 2rem;
         border-bottom: 1px solid #eee;
         padding-bottom: 1rem;
     }
@@ -68,6 +65,18 @@ const { Content } = await post.render();
     .post-content {
         font-size: 1.1rem;
         line-height: 1.8;
+        overflow-wrap: break-word; /* Ensure text wraps */
+        word-wrap: break-word; /* Legacy support */
+    }
+
+    @media (max-width: 768px) {
+        .post-single {
+            padding: 1.25rem; /* Reduced padding on mobile */
+        }
+        
+        .post-title {
+            font-size: 2rem; /* Smaller title on mobile */
+        }
     }
 
     /* Markdown content styles */

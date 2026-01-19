@@ -1,4 +1,8 @@
 /* Global Styles inspired by glukhov.org */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 :root {
 	--color-bg: #f7f7f7;
     --color-surface: #ffffff;
@@ -8,14 +12,21 @@
 	--color-secondary: #222222; /* Dark nav/footer */
     --color-border: #e6e6e6;
 
-	--font-sans: 'Open Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    /* Typography */
+    --font-header: 'Open Sans', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --weight-header: 800;
+    --weight-body: 400;
+    --tracking-header: -0.02em;
+    --tracking-body: -0.02em;
+
     --max-width: 1200px;
 }
 
 html {
 	background-color: var(--color-bg);
 	color: var(--color-text);
-	font-family: var(--font-sans);
+	font-family: var(--font-body);
     line-height: 1.6;
 }
 
@@ -25,6 +36,10 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    font-family: var(--font-body);
+    font-weight: var(--weight-body);
+    letter-spacing: var(--tracking-body);
+    overflow-x: hidden; /* Prevent horizontal scroll on body */
 }
 
 a {
@@ -42,7 +57,7 @@ a:hover {
 .container {
     max-width: var(--max-width);
     margin: 0 auto;
-    padding: 0 1rem;
+    padding: 0 1.5rem; /* Increased side padding for mobile breathing room */
 }
 
 .grid-layout {
@@ -62,10 +77,32 @@ a:hover {
 h1, h2, h3, h4, h5, h6 {
     color: #000;
     margin-top: 0;
-    font-weight: 700;
+    font-family: var(--font-header);
+    font-weight: var(--weight-header);
+    letter-spacing: var(--tracking-header);
 }
 
 img {
     max-width: 100%;
     height: auto;
+}
+
+/* Prevent overflow in code blocks */
+pre {
+    overflow-x: auto;
+    max-width: 100%;
+    border-radius: 4px;
+}
+
+/* Ensure long words don't break layout */
+.content {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1.25rem;
+    }
 }

@@ -63,6 +63,6 @@ This will trigger both GitHub Actions and Cloudflare Pages to rebuild your site.
 #### Default Fallback
 
 If these variables are not set, the config defaults to the GitHub Pages setup:
--   `BASE`: `/blog/`
+-   `BASE`: `/`
 -   `SITE`: `https://divyavanmahajan.github.io`
 

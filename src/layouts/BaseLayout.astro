@@ -1,16 +1,20 @@
 ---
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import Sidebar from '../components/Sidebar.astro';
-import '../styles/global.css';
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Sidebar from "../components/Sidebar.astro";
+import "../styles/global.css";
 
 interface Props {
 	title: string;
 	description?: string;
-    withSidebar?: boolean;
+	withSidebar?: boolean;
 }
 
-const { title, description = "A minimalist technical blog", withSidebar = true } = Astro.props;
+const {
+	title,
+	description = "A minimalist technical blog",
+	withSidebar = true,
+} = Astro.props;
 ---
 
 <!doctype html>
@@ -19,28 +23,34 @@ const { title, description = "A minimalist technical blog", withSidebar = true }
 		<meta charset="UTF-8" />
 		<meta name="description" content={description} />
 		<meta name="viewport" content="width=device-width" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700;800&family=Inter:wght@400;600&display=swap"
+			rel="stylesheet"
+		/>
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
 	<body>
 		<Header />
-        
-        <div class="container grid-layout">
-            <main class="content">
-                <slot />
-            </main>
-            
-            {withSidebar && <Sidebar />}
-        </div>
+
+		<div class="container grid-layout">
+			<main class="content">
+				<slot />
+			</main>
+
+			{withSidebar && <Sidebar />}
+		</div>
 
 		<Footer />
 	</body>
 </html>
 
 <style>
-    /* If sidebar is disabled, center content or maximize width */
-    :global(.grid-layout) {
-         /* inherited from global.css, but logic handled there via grid */
-    }
+	/* If sidebar is disabled, center content or maximize width */
+	:global(.grid-layout) {
+		/* inherited from global.css, but logic handled there via grid */
+	}
 </style>

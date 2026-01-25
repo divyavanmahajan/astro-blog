@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>RACF-Style Authorization in Modern Java Applications</title>
+</head>
+<body>
+    <h1>RACF-Style Authorization in Modern Java Applications</h1>
+    <p><em>Originally published at <a href="https://divyavanmahajan.github.io/posts/2026/01/racf-style-authorization-modern-java">https://divyavanmahajan.github.io</a></em></p>
+    <hr>
+    <p><img src="https://divyavanmahajan.github.io/images/racf-style-authorization.png" alt="RACF-Style Authorization"></p>
+<h2>Introduction</h2>
+<p>Modern applications often struggle with authorization complexity—scattered <code>@RolesAllowed</code> annotations, hardcoded role checks, and no clear audit trail of <em>why</em> a decision was made. Yet decades ago, mainframe systems solved this problem elegantly with RACF (Resource Access Control Facility).</p>
+<p>This post explores how to bring <strong>RACF-style authorization</strong> to modern applications, creating centralized, auditable, resource-based access control that&#39;s both powerful and maintainable. Since I&#39;ve used SAP extensively, I wanted to compare it with RACF as well.</p>
+<h2>What RACF Actually Did</h2>
+<p>RACF wasn&#39;t just &quot;login + roles.&quot; It was fundamentally different from typical RBAC systems:</p>
+<blockquote>
+<p><strong>A centralized policy engine that decides whether a subject can perform an action on a named resource—consistently, auditably, and outside application code.</strong></p>
+</blockquote>
+<h3>Key Properties</h3>
+<ol>
+<li><strong>One authority</strong> - Single source of truth for all authorization decisions</li>
+<li><strong>Stable resource names</strong> - Predictable, hierarchical naming scheme</li>
+<li><strong>Explicit access levels</strong> - Clear action semantics (READ, UPDATE, EXECUTE, etc.)</li>
+<li><strong>Default deny</strong> - Nothing is permitted unless explicitly allowed</li>
+<li><strong>Audited decisions</strong> - Every authorization check is logged</li>
+</ol>
+<p>Applications <strong>asked</strong>, RACF <strong>decided</strong>. The application never made authorization decisions itself.</p>
+<h2>RACF vs. Typical Modern App Security</h2>
+<p>Let&#39;s contrast the approaches:</p>
+<h3>Typical Modern Monolith (Problematic)</h3>
+<pre><code class="language-java">@RestController
+public class AccountController {
+    
+    @RolesAllowed(&quot;ADMIN&quot;)  // Hardcoded role
+    @PostMapping(&quot;/accounts/{id}/withdraw&quot;)
+    public void withdraw(@PathVariable String id, @RequestBody WithdrawRequest req) {
+        // Authorization mixed with business logic
+        if (!currentUser.hasRole(&quot;ADMIN&quot;) &amp;&amp; !currentUser.owns(id)) {
+            throw new ForbiddenException();
+        }
+        accountService.withdraw(id, req.getAmount());
+    }
+}
+</code></pre>
+<p><strong>Problems:</strong></p>
+<ul>
+<li>Role names hardcoded throughout codebase</li>
+<li>Authorization logic scattered and duplicated</li>
+<li>No global visibility into who can do what</li>
+<li>Difficult to audit <em>why</em> something was allowed</li>
+<li>Can&#39;t answer: &quot;Who could withdraw from account X last Tuesday?&quot;</li>
+</ul>
+<h3>RACF-Style Monolith (Better)</h3>
+<pre><code class="language-java">@RestController
+public class AccountController {
+    
+    private final AccountService accountService;
+    
+    @PostMapping(&quot;/accounts/{id}/withdraw&quot;)
+    public void withdraw(@PathVariable String id, @RequestBody WithdrawRequest req) {
+        // Just delegate to service - authorization happens there
+        accountService.withdraw(currentSubject(), id, req.getAmount());
+    }
+}
+
+@Service
+public class AccountService {
+    private final AuthorizationService auth;
+    
+    public void withdraw(Subject subject, String accountId, BigDecimal amount) {
+        // Authorization at use-case boundary
+        auth.check(subject, Resource.account(accountId), Action.UPDATE);
+        
+        // Business logic follows - clean and focused
+        Account account = accountRepository.findById(accountId);
+        account.withdraw(amount);
+        accountRepository.save(account);
+    }
+}
+</code></pre>
+<p><strong>Benefits:</strong></p>
+<ul>
+<li>One authorization service - single point of control</li>
+<li>Policy is data, not code annotations</li>
+<li>Authorization explicit at business boundaries</li>
+<li>All decisions logged centrally</li>
+<li>Can answer audit questions easily</li>
+</ul>
+<h2>The RACF Mental Model</h2>
+<p>Understanding RACF requires thinking in terms of three core concepts:</p>
+<h3>1. Subject</h3>
+<p>Who or what is requesting access:</p>
+<ul>
+<li><strong>User</strong> - <code>USER:alice</code></li>
+<li><strong>Service account</strong> - <code>SERVICE:payment-processor</code></li>
+<li><strong>Batch job</strong> - <code>BATCH:end-of-day</code></li>
+</ul>
+<h3>2. Resource</h3>
+<p>A <strong>stable, named entity</strong> in your system:</p>
+<ul>
+<li><code>ACCOUNT:12345</code></li>
+<li><code>LEDGER:POST</code></li>
+<li><code>BATCH:END_OF_DAY</code></li>
+<li><code>CUSTOMER:98765</code></li>
+</ul>
+<p>The naming is hierarchical and predictable. Resources aren&#39;t URLs—they&#39;re business concepts.</p>
+<h3>3. Action</h3>
+<p>What capability is being requested:</p>
+<ul>
+<li><code>READ</code> - View the resource</li>
+<li><code>UPDATE</code> - Modify the resource</li>
+<li><code>EXECUTE</code> - Run an operation</li>
+<li><code>DELETE</code> - Remove the resource</li>
+<li><code>ADMIN</code> - Full control</li>
+</ul>
+<p>RACF cared about <strong>capabilities</strong>, not screens or endpoints.</p>
+<h2>Implementing RACF-Style Authorization in Java</h2>
+<h3>Step 1: Central Authorization Service</h3>
+<p>Create <strong>one place</strong> for all authorization decisions:</p>
+<pre><code class="language-java">public interface AuthorizationService {
+    /**
+     * Check if subject can perform action on resource.
+     * Throws AuthorizationException if denied.
+     * Returns silently if allowed.
+     */
+    void check(Subject subject, Resource resource, Action action);
+    
+    /**
+     * Same as check() but returns boolean instead of throwing.
+     * Use sparingly - prefer check() for clearer semantics.
+     */
+    boolean isAllowed(Subject subject, Resource resource, Action action);
+}
+
+public class KeycloakAuthorizationService implements AuthorizationService {
+    
+    private final KeycloakAuthzClient authzClient;
+    private final AuditLogger auditLogger;
+    
+    @Override
+    public void check(Subject subject, Resource resource, Action action) {
+        boolean allowed = evaluatePolicy(subject, resource, action);
+        
+        // Always audit the decision
+        auditLogger.log(AuditEvent.builder()
+            .subject(subject)
+            .resource(resource)
+            .action(action)
+            .result(allowed ? &quot;ALLOW&quot; : &quot;DENY&quot;)
+            .timestamp(Instant.now())
+            .build());
+        
+        if (!allowed) {
+            throw new AuthorizationException(
+                &quot;Subject %s cannot %s on %s&quot;.formatted(subject, action, resource)
+            );
+        }
+    }
+    
+    private boolean evaluatePolicy(Subject subject, Resource resource, Action action) {
+        // Query Keycloak authorization service
+        AuthorizationRequest request = new AuthorizationRequest()
+            .subject(subject.getId())
+            .resource(resource.getName())
+            .scope(action.getName());
+            
+        return authzClient.evaluate(request).isGranted();
+    }
+}
+</code></pre>
+<h3>Step 2: Stable Resource Naming</h3>
+<p>Resource names must be:</p>
+<ul>
+<li><strong>Predictable</strong> - Easy to construct from business context</li>
+<li><strong>Human-readable</strong> - Clear what they represent</li>
+<li><strong>Stable</strong> - Don&#39;t change with refactoring</li>
+</ul>
+<pre><code class="language-java">public class Resource {
+    private final String name;
+    
+    private Resource(String name) {
+        this.name = name;
+    }
+    
+    // Factory methods for type safety and consistency
+    public static Resource account(String accountId) {
+        return new Resource(&quot;ACCOUNT:&quot; + accountId);
+    }
+    
+    public static Resource accountType(String accountId) {
+        // Hierarchical resources for broader permissions
+        return new Resource(&quot;ACCOUNT:*&quot;);
+    }
+    
+    public static Resource ledgerPost() {
+        return new Resource(&quot;LEDGER:POST&quot;);
+    }
+    
+    public static Resource batch(String batchName) {
+        return new Resource(&quot;BATCH:&quot; + batchName);
+    }
+    
+    public String getName() {
+        return name;
+    }
+}
+</code></pre>
+<p><strong>Bad naming:</strong></p>
+<pre><code>/api/v1/accounts/withdraw  // Coupled to API structure
+</code></pre>
+<p><strong>Good naming:</strong></p>
+<pre><code>ACCOUNT:WITHDRAW           // Business capability
+ACCOUNT:12345              // Specific resource
+</code></pre>
+<h3>Step 3: Policy as Data</h3>
+<p>Store policies in Keycloak, not in code:</p>
+<table>
+<thead>
+<tr>
+<th>Subject</th>
+<th>Resource</th>
+<th>Action</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ROLE:TELLER</td>
+<td>ACCOUNT:*</td>
+<td>READ</td>
+<td>Allow</td>
+</tr>
+<tr>
+<td>ROLE:SUPERVISOR</td>
+<td>ACCOUNT:*</td>
+<td>UPDATE</td>
+<td>Allow</td>
+</tr>
+<tr>
+<td>USER:alice</td>
+<td>LEDGER:POST</td>
+<td>EXECUTE</td>
+<td>Allow</td>
+</tr>
+<tr>
+<td>GROUP:BATCH_OPERATORS</td>
+<td>BATCH:*</td>
+<td>EXECUTE</td>
+<td>Allow</td>
+</tr>
+</tbody></table>
+<p>This can live in:</p>
+<ul>
+<li>Keycloak Authorization Services (recommended)</li>
+<li>Database table</li>
+<li>Policy files in config repository</li>
+<li>External IAM system</li>
+</ul>
+<p><strong>But never in code annotations.</strong></p>
+<h3>Step 4: Enforce at Use-Case Boundaries</h3>
+<p>Authorization happens:</p>
+<ul>
+<li><strong>After authentication</strong> - We know who the subject is</li>
+<li><strong>Before business logic</strong> - Check permission first</li>
+<li><strong>At application service level</strong> - Not in controllers or repositories</li>
+</ul>
+<pre><code class="language-java">@Service
+public class PaymentService {
+    
+    private final AuthorizationService auth;
+    private final AccountRepository accountRepo;
+    private final LedgerService ledgerService;
+    
+    @Transactional
+    public void processPayment(Subject subject, PaymentCommand command) {
+        // Authorization first
+        auth.check(subject, Resource.account(command.fromAccount()), Action.UPDATE);
+        auth.check(subject, Resource.account(command.toAccount()), Action.UPDATE);
+        auth.check(subject, Resource.ledgerPost(), Action.EXECUTE);
+        
+        // Business logic - clean and focused
+        Account from = accountRepo.findById(command.fromAccount());
+        Account to = accountRepo.findById(command.toAccount());
+        
+        from.debit(command.amount());
+        to.credit(command.amount());
+        
+        ledgerService.recordPayment(from, to, command.amount());
+    }
+}
+</code></pre>
+<p><strong>Where NOT to check:</strong></p>
+<ul>
+<li>❌ REST controllers (too early, coupled to transport)</li>
+<li>❌ Repositories (too late, data layer shouldn&#39;t know about authz)</li>
+<li>❌ UI code (can&#39;t be trusted)</li>
+</ul>
+<h3>Step 5: Default Deny</h3>
+<p>If no policy matches, access is <strong>denied by default</strong>:</p>
+<pre><code class="language-java">private boolean evaluatePolicy(Subject subject, Resource resource, Action action) {
+    List&lt;Policy&gt; matchingPolicies = policyRepository.findMatching(subject, resource, action);
+    
+    // No matching policy = deny
+    if (matchingPolicies.isEmpty()) {
+        return false;
+    }
+    
+    // Check if any policy explicitly allows
+    return matchingPolicies.stream()
+        .anyMatch(policy -&gt; policy.getEffect() == Effect.ALLOW);
+}
+</code></pre>
+<p>Modern apps often default to <strong>allow</strong> (fail-open). RACF never did—it failed closed.</p>
+<h3>Step 6: Central Auditing</h3>
+<p>Every authorization decision must be logged:</p>
+<pre><code class="language-json">{
+  &quot;timestamp&quot;: &quot;2026-01-25T14:23:45Z&quot;,
+  &quot;subject&quot;: &quot;USER:alice&quot;,
+  &quot;resource&quot;: &quot;ACCOUNT:12345&quot;,
+  &quot;action&quot;: &quot;UPDATE&quot;,
+  &quot;result&quot;: &quot;DENY&quot;,
+  &quot;reason&quot;: &quot;No matching policy&quot;,
+  &quot;context&quot;: {
+    &quot;ipAddress&quot;: &quot;192.168.1.100&quot;,
+    &quot;userAgent&quot;: &quot;Mozilla/5.0...&quot;,
+    &quot;requestId&quot;: &quot;req-789&quot;
+  }
+}
+</code></pre>
+<p>This enables answering critical questions:</p>
+<ul>
+<li>&quot;Who accessed account X last week?&quot;</li>
+<li>&quot;Why was user Y denied access to resource Z?&quot;</li>
+<li>&quot;Show me all failed authorization attempts in the last hour&quot;</li>
+<li>&quot;Has anyone accessed this sensitive resource today?&quot;</li>
+</ul>
+<p>Most modern apps <strong>cannot answer</strong> these questions. RACF could—instantly.</p>
+<h2>Integrating with Keycloak</h2>
+<p>Keycloak provides excellent support for RACF-style authorization through its <strong>Authorization Services</strong> feature.</p>
+<h3>Mapping RACF Concepts to Keycloak</h3>
+<table>
+<thead>
+<tr>
+<th>RACF Concept</th>
+<th>Keycloak Equivalent</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Subject</td>
+<td>User / Service Account / Client</td>
+</tr>
+<tr>
+<td>Resource</td>
+<td>Resource (with stable name)</td>
+</tr>
+<tr>
+<td>Action</td>
+<td>Scope / Permission</td>
+</tr>
+<tr>
+<td>Policy</td>
+<td>Authorization Policy</td>
+</tr>
+<tr>
+<td>Audit</td>
+<td>Admin Events + Custom Logs</td>
+</tr>
+</tbody></table>
+<h3>Setting Up Resources in Keycloak</h3>
+<ol>
+<li><p><strong>Define Resources:</strong></p>
+<ul>
+<li><code>ACCOUNT</code> (with scopes: READ, UPDATE, DELETE)</li>
+<li><code>LEDGER</code> (with scopes: READ, EXECUTE)</li>
+<li><code>BATCH</code> (with scopes: EXECUTE)</li>
+</ul>
+</li>
+<li><p><strong>Create Policies:</strong></p>
+<ul>
+<li>Role-based: &quot;Tellers can READ accounts&quot;</li>
+<li>User-based: &quot;Alice can EXECUTE ledger posts&quot;</li>
+<li>Group-based: &quot;Batch operators can EXECUTE batch jobs&quot;</li>
+<li>Time-based: &quot;Batch jobs only during maintenance window&quot;</li>
+</ul>
+</li>
+<li><p><strong>Define Permissions:</strong></p>
+<ul>
+<li>Link resources + scopes to policies</li>
+<li>Support hierarchical permissions (e.g., <code>ACCOUNT:*</code> for all accounts)</li>
+</ul>
+</li>
+</ol>
+<h3>Two Enforcement Patterns</h3>
+<h4>Pattern 1: Runtime Policy Evaluation (Most RACF-like)</h4>
+<p>The application queries Keycloak for each authorization decision:</p>
+<pre><code class="language-java">public class KeycloakAuthorizationService implements AuthorizationService {
+    
+    @Override
+    public void check(Subject subject, Resource resource, Action action) {
+        // Query Keycloak in real-time
+        AuthorizationRequest request = new AuthorizationRequest()
+            .accessToken(subject.getAccessToken())
+            .resource(resource.getName())
+            .scope(action.getName());
+        
+        AuthorizationResponse response = keycloakAuthzClient.authorize(request);
+        
+        if (!response.isGranted()) {
+            throw new AuthorizationException(&quot;Access denied&quot;);
+        }
+    }
+}
+</code></pre>
+<p><strong>Pros:</strong></p>
+<ul>
+<li>Most accurate - always reflects current policies</li>
+<li>Supports instant revocation</li>
+<li>Closest to RACF semantics</li>
+</ul>
+<p><strong>Cons:</strong></p>
+<ul>
+<li>Slight latency for external call</li>
+<li>Requires Keycloak availability</li>
+</ul>
+<h4>Pattern 2: JWT-Based Claims (Faster, Less Flexible)</h4>
+<p>Keycloak issues a JWT with embedded permissions:</p>
+<pre><code class="language-java">public class JwtAuthorizationService implements AuthorizationService {
+    
+    @Override
+    public void check(Subject subject, Resource resource, Action action) {
+        // Extract permissions from JWT claims
+        Set&lt;String&gt; permissions = subject.getJwtClaims()
+            .get(&quot;permissions&quot;, Set.class);
+        
+        String requiredPermission = resource.getName() + &quot;:&quot; + action.getName();
+        
+        if (!permissions.contains(requiredPermission)) {
+            throw new AuthorizationException(&quot;Access denied&quot;);
+        }
+    }
+}
+</code></pre>
+<p><strong>Pros:</strong></p>
+<ul>
+<li>Fast - no external call needed</li>
+<li>Works offline</li>
+</ul>
+<p><strong>Cons:</strong></p>
+<ul>
+<li>Policies &quot;cached&quot; at token issue time</li>
+<li>Revocation delayed until token expiry</li>
+<li>Less flexible for dynamic resources</li>
+</ul>
+<p><strong>Recommendation:</strong> Use Pattern 1 for RACF-level precision, Pattern 2 for high-throughput scenarios where slight staleness is acceptable.</p>
+<h2>Comparison with SAP Authorization</h2>
+<p>SAP has a well-established authorization model that&#39;s similar in spirit to RACF:</p>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>RACF/Keycloak</th>
+<th>SAP</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Model</strong></td>
+<td>Subject-Resource-Action</td>
+<td>User-Role-Object-Activity</td>
+</tr>
+<tr>
+<td><strong>Enforcement</strong></td>
+<td>Central API or JWT</td>
+<td>Embedded in app/module code</td>
+</tr>
+<tr>
+<td><strong>Granularity</strong></td>
+<td>Fine-grained, hierarchical</td>
+<td>Coarse to fine (authorization objects)</td>
+</tr>
+<tr>
+<td><strong>Policy Storage</strong></td>
+<td>Data-driven, dynamic</td>
+<td>Role assignments; admin-heavy</td>
+</tr>
+<tr>
+<td><strong>Audit Trail</strong></td>
+<td>Central logs + events</td>
+<td>Logs + table-driven checks</td>
+</tr>
+<tr>
+<td><strong>Flexibility</strong></td>
+<td>High - dynamic resources</td>
+<td>Limited - adding objects requires admin</td>
+</tr>
+<tr>
+<td><strong>Cloud Integration</strong></td>
+<td>Native, standards-based</td>
+<td>Limited to SAP ecosystem</td>
+</tr>
+</tbody></table>
+<p><strong>Key Insights:</strong></p>
+<ul>
+<li>SAP &quot;authorization objects&quot; ≈ RACF resources</li>
+<li>SAP separates &quot;activity&quot; from &quot;object&quot; (similar to Action/Resource)</li>
+<li>Keycloak can mimic SAP&#39;s model but is more <strong>modern and standards-compliant</strong></li>
+<li>Both are data-driven, but Keycloak integrates more cleanly with non-SAP apps</li>
+</ul>
+<h2>Common Anti-Patterns to Avoid</h2>
+<h3>❌ Scattered Annotations</h3>
+<pre><code class="language-java">@PreAuthorize(&quot;hasRole(&#39;ADMIN&#39;)&quot;)
+public void deleteAccount(String id) { ... }
+
+@PreAuthorize(&quot;hasRole(&#39;SUPERVISOR&#39;)&quot;)
+public void approveTransaction(String id) { ... }
+</code></pre>
+<p><strong>Problem:</strong> Role names hardcoded everywhere, no audit trail, difficult to change policies.</p>
+<h3>❌ Authorization in Repositories</h3>
+<pre><code class="language-java">public Account findById(String id) {
+    if (!currentUser.canAccess(id)) {
+        throw new AccessDeniedException();
+    }
+    return accounts.get(id);
+}
+</code></pre>
+<p><strong>Problem:</strong> Data layer shouldn&#39;t know about authorization. Violates separation of concerns.</p>
+<h3>❌ Multiple Authorization Engines</h3>
+<pre><code class="language-java">// Some endpoints use Spring Security
+@PreAuthorize(&quot;hasRole(&#39;USER&#39;)&quot;)
+
+// Others use custom checks
+if (!customAuthService.check(...)) { ... }
+
+// Others use API gateway policies
+// Yet others trust the caller
+</code></pre>
+<p><strong>Problem:</strong> No single source of truth. Impossible to audit. Security holes inevitable.</p>
+<h3>❌ No Audit Trail</h3>
+<pre><code class="language-java">public void check(Subject s, Resource r, Action a) {
+    boolean allowed = policy.evaluate(s, r, a);
+    if (!allowed) throw new AuthorizationException();
+    // Decision not logged!
+}
+</code></pre>
+<p><strong>Problem:</strong> Can&#39;t answer &quot;who did what when&quot; questions. Fails compliance requirements.</p>
+<h2>Benefits of RACF-Style Authorization</h2>
+<h3>For Development Teams</h3>
+<ul>
+<li><strong>Clearer code</strong> - Authorization explicit and centralized</li>
+<li><strong>Easier testing</strong> - Mock the authorization service</li>
+<li><strong>Faster changes</strong> - Policy updates don&#39;t require code changes</li>
+<li><strong>Better debugging</strong> - All decisions in one place</li>
+</ul>
+<h3>For Operations Teams</h3>
+<ul>
+<li><strong>Visibility</strong> - Complete audit trail</li>
+<li><strong>Flexibility</strong> - Change policies without deployments</li>
+<li><strong>Security</strong> - Default-deny, centralized control</li>
+<li><strong>Compliance</strong> - Answer audit questions easily</li>
+</ul>
+<h3>For the Business</h3>
+<ul>
+<li><strong>Risk reduction</strong> - Consistent enforcement</li>
+<li><strong>Faster compliance</strong> - Built-in audit trail</li>
+<li><strong>Lower costs</strong> - Fewer security incidents</li>
+<li><strong>Agility</strong> - Permission changes don&#39;t require code releases</li>
+</ul>
+<h2>Implementation Checklist</h2>
+<p>Ready to implement RACF-style authorization? Here&#39;s your checklist:</p>
+<ul>
+<li><input disabled="" type="checkbox"> Define your resource naming scheme</li>
+<li><input disabled="" type="checkbox"> Create central <code>AuthorizationService</code> interface</li>
+<li><input disabled="" type="checkbox"> Set up Keycloak (or alternative policy engine)</li>
+<li><input disabled="" type="checkbox"> Map business resources to Keycloak resources</li>
+<li><input disabled="" type="checkbox"> Define initial policies in Keycloak</li>
+<li><input disabled="" type="checkbox"> Implement audit logging for all decisions</li>
+<li><input disabled="" type="checkbox"> Enforce at use-case boundaries (service layer)</li>
+<li><input disabled="" type="checkbox"> Remove authorization logic from controllers and repositories</li>
+<li><input disabled="" type="checkbox"> Set up default-deny behavior</li>
+<li><input disabled="" type="checkbox"> Create operational dashboards for audit data</li>
+<li><input disabled="" type="checkbox"> Document the resource naming convention</li>
+<li><input disabled="" type="checkbox"> Train team on policy management</li>
+</ul>
+<h2>Conclusion</h2>
+<p>RACF-style authorization isn&#39;t just a historical curiosity—it&#39;s a battle-tested pattern that solves real problems modern applications still face:</p>
+<ul>
+<li><strong>Centralized control</strong> instead of scattered checks</li>
+<li><strong>Auditable decisions</strong> instead of mystery denials</li>
+<li><strong>Data-driven policies</strong> instead of hardcoded rules</li>
+<li><strong>Resource-based permissions</strong> instead of coarse roles</li>
+</ul>
+<p>By bringing these principles to modern Java applications using tools like Keycloak, we get the best of both worlds: mainframe-grade security discipline with cloud-native flexibility.</p>
+<p>The question isn&#39;t whether RACF-style authorization is relevant today. The question is: <strong>Why are we still building applications without it?</strong></p>
+<hr>
+<p><strong>What patterns have you noticed in your modernization journeys? Share in the comments below!</strong></p>
+<p>If these architectural deep-dives help you, <strong>follow me</strong> for insights on enterprise architecture.</p>
+<p><code>#MainframeModernization</code> <code>#SoftwareArchitecture</code> <code>#CloudNative</code> <code>#EnterpriseJava</code> <code>#TechLeadership</code></p>
+
+</body>
+</html>

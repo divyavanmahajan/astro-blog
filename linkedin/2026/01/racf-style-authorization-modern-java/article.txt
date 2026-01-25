@@ -1,18 +1,11 @@
----
-title: 'RACF-Style Authorization in Modern Java Applications'
-description: 'A deep dive into building centralized, auditable, resource-based access control systems using Keycloak, inspired by mainframe RACF principles.'
-pubDate: 2026-01-25
-category: 'security'
-tags: ['java', 'security', 'authorization', 'keycloak', 'racf', 'enterprise']
-categories: ["Security", "Architecture"]
-heroImage: "/images/racf-style-authorization.png"
-author: "Divya van Mahajan"
-series: "modernization-003"
-linkedin: true
-linkedinMessage: "Modernization 3: RACF-style authorization in modern Java applications"
+# RACF-Style Authorization in Modern Java Applications
+
+Originally published at https://divyavanmahajan.github.io
+
 ---
 
-![RACF-Style Authorization](/images/racf-style-authorization.png)
+
+![RACF-Style Authorization](https://divyavanmahajan.github.io/images/racf-style-authorization.png)
 
 ## Introduction
 

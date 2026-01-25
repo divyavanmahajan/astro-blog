@@ -1,0 +1,302 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const allPosts = await getCollection("blog");
+const seriesMap = new Map();
+
+allPosts.forEach((post) => {
+    // Only process published posts with a series
+    if (post.data.draft || !post.data.series) return;
+
+    const [seriesId] = post.data.series.split("-");
+    const name = seriesId.replace(/[-_]/g, " ");
+
+    if (!seriesMap.has(seriesId)) {
+        seriesMap.set(seriesId, {
+            id: seriesId,
+            name: name,
+            count: 0,
+            lastPost: post,
+        });
+    }
+
+    const seriesData = seriesMap.get(seriesId);
+    seriesData.count += 1;
+
+    // Update if this post is newer
+    if (post.data.pubDate > seriesData.lastPost.data.pubDate) {
+        seriesData.lastPost = post;
+    }
+});
+
+const sortedSeries = Array.from(seriesMap.values()).sort((a, b) =>
+    a.name.localeCompare(b.name),
+);
+---
+
+<BaseLayout title="Blog Series" description="All multi-part blog series">
+    <div class="page-header">
+        <h1>Series</h1>
+        <div class="controls">
+            <div class="search-control">
+                <input
+                    type="text"
+                    id="series-search"
+                    placeholder="Search series..."
+                    oninput="filterSeries(this.value)"
+                />
+            </div>
+            <div class="sort-control">
+                <button
+                    id="sort-alpha"
+                    class="active"
+                    onclick="sortSeries('alpha')">Name (A-Z)</button
+                >
+                <button id="sort-date" onclick="sortSeries('date')"
+                    >Last Updated</button
+                >
+            </div>
+        </div>
+    </div>
+
+    <div id="series-grid" class="series-grid">
+        {
+            sortedSeries.map((series) => (
+                <div
+                    class="series-card"
+                    data-name={series.name}
+                    data-date={series.lastPost.data.pubDate.getTime()}
+                >
+                    <div class="series-card-header">
+                        <h2>
+                            <a
+                                href={`${import.meta.env.BASE_URL}series/${series.id.toLowerCase()}/`}
+                            >
+                                {series.name}
+                            </a>
+                        </h2>
+                        <span class="badge">{series.count} parts</span>
+                    </div>
+
+                    <div class="latest-update">
+                        <span class="label">Latest:</span>
+                        <a
+                            href={`${import.meta.env.BASE_URL}posts/${series.lastPost.slug}/`}
+                        >
+                            {series.lastPost.data.title}
+                        </a>
+                        <time
+                            datetime={series.lastPost.data.pubDate.toISOString()}
+                        >
+                            {series.lastPost.data.pubDate.toLocaleDateString(
+                                "en-us",
+                                {
+                                    year: "numeric",
+                                    month: "short",
+                                    day: "numeric",
+                                },
+                            )}
+                        </time>
+                    </div>
+                </div>
+            ))
+        }
+    </div>
+</BaseLayout>
+
+<script is:inline>
+    function filterSeries(query) {
+        const grid = document.getElementById("series-grid");
+        const cards = Array.from(grid.children);
+        const searchTerm = query.toLowerCase();
+
+        cards.forEach((card) => {
+            const name = card.dataset.name.toLowerCase();
+            if (name.includes(searchTerm)) {
+                card.style.display = "";
+            } else {
+                card.style.display = "none";
+            }
+        });
+    }
+
+    function sortSeries(method) {
+        const grid = document.getElementById("series-grid");
+        const cards = Array.from(grid.children);
+
+        // Update buttons
+        document
+            .querySelectorAll(".sort-control button")
+            .forEach((btn) => btn.classList.remove("active"));
+        document.getElementById(`sort-${method}`).classList.add("active");
+
+        cards.sort((a, b) => {
+            if (method === "alpha") {
+                return a.dataset.name.localeCompare(b.dataset.name);
+            } else {
+                return b.dataset.date - a.dataset.date; // Newest first
+            }
+        });
+
+        cards.forEach((card) => grid.appendChild(card));
+    }
+
+    // Attach to window for button access
+    window.sortSeries = sortSeries;
+    window.filterSeries = filterSeries;
+</script>
+
+<style>
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--color-border);
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .page-header h1 {
+        margin: 0;
+        text-transform: capitalize;
+    }
+
+    .controls {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .search-control input {
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        min-width: 200px;
+    }
+
+    .sort-control {
+        display: flex;
+    }
+
+    .sort-control button {
+        background: transparent;
+        border: 1px solid #ccc;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: 0.9rem;
+        transition: all 0.2s;
+    }
+
+    .sort-control button:first-child {
+        border-right: none;
+        border-radius: 4px 0 0 4px;
+    }
+
+    .sort-control button:last-child {
+        border-radius: 0 4px 4px 0;
+    }
+
+    .sort-control button.active {
+        background: var(--color-primary);
+        color: white;
+        border-color: var(--color-primary);
+    }
+
+    .series-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .series-card {
+        background: white;
+        border: 1px solid var(--color-border);
+        padding: 1.5rem;
+        border-radius: 4px;
+        transition:
+            transform 0.2s,
+            box-shadow 0.2s;
+    }
+
+    .series-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .series-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    .series-card-header h2 {
+        margin: 0;
+        font-size: 1.5rem;
+        text-transform: capitalize;
+    }
+
+    .series-card-header a {
+        text-decoration: none;
+        color: var(--color-text);
+    }
+
+    .series-card-header a:hover {
+        color: var(--color-primary);
+    }
+
+    .badge {
+        background: #eee;
+        padding: 0.2rem 0.6rem;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        color: #666;
+    }
+
+    .latest-update {
+        font-size: 0.9rem;
+    }
+
+    .latest-update .label {
+        display: block;
+        color: #888;
+        font-size: 0.8rem;
+        margin-bottom: 0.2rem;
+    }
+
+    .latest-update a {
+        display: block;
+        color: var(--color-primary);
+        text-decoration: none;
+        font-weight: 500;
+        margin-bottom: 0.2rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .latest-update time {
+        color: #888;
+        font-size: 0.8rem;
+    }
+
+    @media (max-width: 600px) {
+        .page-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .series-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>

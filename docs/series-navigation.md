@@ -10,7 +10,7 @@ The series navigation feature allows blog posts to be organized into sequential 
 
 The `series` field in frontmatter follows the pattern: `{series-name}-{sequence-number}`
 
-- **series-name**: Alphanumeric identifier for the series (use hyphens to separate words)
+- **series-name**: Alphanumeric identifier for the series (use hyphens or underscores to separate words)
 - **sequence-number**: Three-digit zero-padded number (001, 002, 003, etc.)
 
 ### Example
@@ -64,12 +64,14 @@ The `SeriesNav` component appears in two locations:
 
 1. **Before Table of Contents** - Gives readers immediate context
 2. **After post content** - Enables easy navigation to next post in series
+3. **Home Page** - Posts that are part of a series show a "Part of: [Series Name]" badge.
+4. **Series Overview** - Site-wide list of all series at `/series`.
 
 ## Visual Design
 
 ### Layout
-- **Gradient background** - Purple gradient for visual distinction
-- **Series header** - Shows "Part X of Y in the {series name} series"
+- **Clean bordered layout** - Matches the Table of Contents aesthetic
+- **Series header** - Shows "Part X of Y in the {series name} series" with dark header and red links
 - **Ordered list** - Numbered posts in sequence
 - **Current post badge** - "You are here" indicator
 - **Interactive links** - Hover effects on navigable posts

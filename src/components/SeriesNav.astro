@@ -55,7 +55,7 @@ if (currentSeries) {
                 </svg>
                 <span class="series-title">
                     Part {currentSequence} of {seriesPosts.length} in the{" "}
-                    <strong>{seriesName.replace(/-/g, " ")}</strong> series
+                    <strong>{seriesName.replace(/[-_]/g, " ")}</strong> series
                 </span>
             </div>
 

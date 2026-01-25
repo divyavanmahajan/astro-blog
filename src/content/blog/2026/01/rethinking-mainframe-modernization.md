@@ -58,13 +58,11 @@ Not microservices on day one. Here's why:
 - Horizontal scaling comes later, after correctness is proven
 - Mainframes are monoliths for good reason—**cohesion matters**
 
-## Lessons from the Field: The "Centralized Hybrid" Pattern
+## The "Centralized Hybrid" Pattern
 
-In a recent modernization project for a major financial institution, the team initially struggled with a "microservices-first" approach. The result was a proliferation of network latency and "distributed transaction" nightmares that the mainframe simply never had.
+A team initially tried a "microservices-first" approach. The result was a proliferation of network latency and "distributed transaction" nightmares that the mainframe simply never had. The solution? Pivot to a **Modular Monolith** running on **Quarkus**.
 
-The solution? We pivoted to a **Modular Monolith** running on **Quarkus**.
-
-By centralizing the **transaction manager (JTA)** and strictly enforcing **domain boundaries** within a single deployable unit, we achieved:
+By centralizing the **transaction manager (JTA)** and strictly enforcing **domain boundaries** within a single deployable unit, they achieved:
 - **30% reduction** in operational complexity.
 - **Sub-millisecond latency** for intra-module calls (replacing REST/gRPC).
 - **Consolidated logging and auditing** that mirrored the reliability of the original mainframe environment.

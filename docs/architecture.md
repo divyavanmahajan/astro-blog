@@ -31,7 +31,8 @@ This project is a static site generated using **[Astro](https://astro.build/)**.
 │   ├── pages/          # File-based routing
 │   │   ├── index.astro         # Homepage
 │   │   ├── about.astro         # About page
-│   │   ├── [category].astro    # Dynamic Category pages
+│   │   ├── categories/         # Category overview and dynamic pages
+│   │   ├── series/             # Series overview and dynamic pages
 │   │   └── posts/
 │   │       └── [...slug].astro # Dynamic Post pages
 │   └── styles/         # Global CSS (Variables, Reset)
@@ -50,8 +51,10 @@ This project is a static site generated using **[Astro](https://astro.build/)**.
 2.  **Validation**: `src/content/config.ts` defines a **Zod schema**. Astro validates all frontmatter at build time, preventing broken builds due to missing fields (e.g., missing `title` or invalid `date`).
 3.  **Collection API**: Pages query data using `getCollection('blog')`.
 4.  **Routing**:
+    -   `index.astro` pulls all published posts and displays them, including series badges for multi-part content.
     -   `[...slug].astro` generates a unique page for every post found in the collection.
-    -   `[category].astro` and `[tag].astro` analyze all posts to generate unique static pages for every distinct category and tag found.
+    -   `categories/index.astro` and `categories/[category].astro` provide category-based discovery.
+    -   `series/index.astro` and `series/[series].astro` provide series-based discovery.
 
 ## 4. Deployment Pipeline
 
@@ -94,12 +97,16 @@ The blog supports multi-part series posts through the `SeriesNav` component, all
 - Visual indication of current position in series
 - Renders only when 2+ posts exist in a series
 - Displays before TOC and after post content
+- Site-wide series overview page at `/series`
+- Series indicators on the homepage post list
+- Support for spaces in series titles (replaces `_` and `-`)
 
 **Implementation:**
 - Component: `src/components/SeriesNav.astro`
+- Overview Page: `src/pages/series/index.astro`
+- Individual Pages: `src/pages/series/[series].astro`
 - Series ID Format: `{series-name}-{sequence}` (e.g., `mainframe-modernization-001`)
-- Integration: Automatically included in post template (`src/pages/posts/[...slug].astro`)
-- Styling: Purple gradient background with responsive design
+- Layout Integration: `src/pages/posts/[...slug].astro` and `src/pages/index.astro`
 
 **Technical Details:**
 - Queries all posts via `getCollection('blog')`

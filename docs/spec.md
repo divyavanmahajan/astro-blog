@@ -32,7 +32,7 @@ draft: false                 # Prevents build in production
 
 - **Layout**: 
     - **Header**: Bold, capitalized site title with clear subtitle.
-    - **Navigation**: High contrast bar (Dark background, white text, Red accent) with links: Home, Categories, Tags, About.
+    - **Navigation**: High contrast bar (Dark background, white text, Red accent) with links: Home, Categories, Series, Tags, About.
     - **Content**: Clean list of posts with thumbnails.
     - **Sidebar** (Right): 
         - **Search**: Client-side search with real-time filtering
@@ -59,4 +59,5 @@ draft: false                 # Prevents build in production
 - **Pages**: About
 - **Overview Pages**: 
     - **/categories**: List of all categories with post count, latest post date, and link to latest post. Supports sorting by alphabetical order or recent activity.
+    - **/series**: List of all blog series with part count and latest update. Supports sorting by alphabetical order or recent activity.
     - **/tags**: List of all tags with post count, latest post date, and link to latest post. Supports sorting by alphabetical order or recent activity.

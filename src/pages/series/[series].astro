@@ -1,22 +1,56 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 
-const posts = (await getCollection("blog"))
-    .filter((post) => !post.data.draft)
-    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+export async function getStaticPaths() {
+    const allPosts = await getCollection("blog");
+    const uniqueSeries = [
+        ...new Set(
+            allPosts
+                .filter((post) => post.data.series)
+                .map((post) => post.data.series.split("-")[0].toLowerCase()),
+        ),
+    ];
+
+    return uniqueSeries.map((series) => {
+        const filteredPosts = allPosts
+            .filter(
+                (post) =>
+                    post.data.series &&
+                    post.data.series.toLowerCase().startsWith(series + "-"),
+            )
+            .map((post) => ({
+                ...post,
+                sequence: parseInt(post.data.series.split("-")[1] || "0"),
+            }))
+            .sort((a, b) => a.sequence - b.sequence);
+
+        return {
+            params: { series },
+            props: { posts: filteredPosts, seriesId: series },
+        };
+    });
+}
+
+const { seriesId, posts } = Astro.props;
+const { BASE_URL } = import.meta.env;
+const seriesName = seriesId.replace(/[-_]/g, " ");
 ---
 
-<BaseLayout title="Home | Divya van Mahajan - Things I've learned">
+<BaseLayout title={`Series: ${seriesName} | Astro Blog`}>
+    <header class="page-header">
+        <h1>Series: <span>{seriesName}</span></h1>
+        <p class="series-meta">{posts.length} parts in this series</p>
+    </header>
+
     <section class="post-list">
         {
             posts.map((post) => (
                 <article class="post-entry">
                     <header class="entry-header">
+                        <div class="entry-sequence">Part {post.sequence}</div>
                         <h2 class="entry-title">
-                            <a
-                                href={`${import.meta.env.BASE_URL}posts/${post.slug}/`}
-                            >
+                            <a href={`${BASE_URL}posts/${post.slug}/`}>
                                 {post.data.title}
                             </a>
                         </h2>
@@ -40,21 +74,6 @@ const posts = (await getCollection("blog"))
                                 {" "}
                                 {post.data.author || "Author"}
                             </span>
-                            {post.data.series && (
-                                <>
-                                    &bull;
-                                    <span class="series-badge">
-                                        Part of:{" "}
-                                        <a
-                                            href={`${import.meta.env.BASE_URL}series/${post.data.series.split("-")[0].toLowerCase()}/`}
-                                        >
-                                            {post.data.series
-                                                .split("-")[0]
-                                                .replace(/[-_]/g, " ")}
-                                        </a>
-                                    </span>
-                                </>
-                            )}
                         </div>
                     </header>
 
@@ -64,7 +83,7 @@ const posts = (await getCollection("blog"))
 
                     <footer class="entry-footer">
                         <a
-                            href={`${import.meta.env.BASE_URL}posts/${post.slug}/`}
+                            href={`${BASE_URL}posts/${post.slug}/`}
                             class="read-more"
                         >
                             Read more...
@@ -77,11 +96,41 @@ const posts = (await getCollection("blog"))
 </BaseLayout>
 
 <style>
+    .page-header {
+        margin-bottom: 2rem;
+        background: #fff;
+        padding: 1rem 2rem;
+        border: 1px solid var(--color-border);
+    }
+    .page-header h1 {
+        margin: 0;
+        text-transform: capitalize;
+    }
+    .page-header span {
+        color: var(--color-primary);
+    }
+
+    .series-meta {
+        color: var(--color-text-light);
+        margin: 0.5rem 0 0;
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
     .post-entry {
         margin-bottom: 2rem;
         background: #fff;
         padding: 2rem;
         border: 1px solid var(--color-border);
+    }
+
+    .entry-sequence {
+        color: var(--color-primary);
+        font-weight: 700;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        margin-bottom: 0.25rem;
     }
 
     .entry-title {
@@ -103,28 +152,6 @@ const posts = (await getCollection("blog"))
         font-size: 0.85rem;
         margin-bottom: 1rem;
         text-transform: uppercase;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .series-badge {
-        color: #666;
-        font-weight: 600;
-        font-size: 0.8rem;
-    }
-
-    .series-badge a {
-        color: var(--color-primary);
-        text-decoration: none;
-        background-color: #fcebeb;
-        padding: 0.1rem 0.4rem;
-        border-radius: 4px;
-    }
-
-    .series-badge a:hover {
-        text-decoration: underline;
     }
 
     .entry-footer {
@@ -143,5 +170,14 @@ const posts = (await getCollection("blog"))
     .read-more:hover {
         background: #cc292b;
         text-decoration: none;
+    }
+
+    @media (max-width: 768px) {
+        .page-header {
+            padding: 1rem;
+        }
+        .post-entry {
+            padding: 1.5rem;
+        }
     }
 </style>

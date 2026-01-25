@@ -17,6 +17,7 @@ const blog = defineCollection({
 		linkedin: z.boolean().default(false),
 		linkedinMessage: z.string().optional(),
 		linkedinArticleUrl: z.string().optional(),
+		series: z.string().optional(), // Format: "series-name-001"
 	}),
 });
 

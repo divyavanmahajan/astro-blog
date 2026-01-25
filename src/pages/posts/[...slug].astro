@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
+import SeriesNav from '../../components/SeriesNav.astro';
 
 export async function getStaticPaths() {
 	const posts = await getCollection('blog');
@@ -32,6 +33,8 @@ const { Content, headings } = await post.render();
             </div>
         </header>
 
+        <SeriesNav currentSeries={post.data.series} currentSlug={post.slug} />
+
         <TableOfContents headings={headings} />
 
         <div class="post-content">
@@ -39,6 +42,8 @@ const { Content, headings } = await post.render();
         </div>
 
         <footer class="post-footer">
+            <SeriesNav currentSeries={post.data.series} currentSlug={post.slug} />
+
             <div class="post-tags">
                 Tags: 
                 {post.data.tags.map(tag => (

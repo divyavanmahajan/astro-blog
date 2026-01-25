@@ -1,11 +1,12 @@
 ---
-title: "The Evolution of Enterprise Java: From EJB to Quarkus"
+title: "Evolution of Enterprise Java: From EJB to Quarkus"
 description: "A retrospective on how Enterprise Java evolved from the heavy EJB era to modern cloud-native frameworks like Spring Boot and Quarkus."
 pubDate: "2026-01-25"
 categories: ["Architecture", "History"]
 tags: ["java", "architecture", "history", "spring", "quarkus", "jakarta-ee"]
 heroImage: "/images/java-evolution.png"
 author: "Divya van Mahajan"
+series: "modernization-001"
 ---
 
 # Introduction

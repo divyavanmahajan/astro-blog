@@ -1,0 +1,211 @@
+---
+import { getCollection } from "astro:content";
+
+interface Props {
+    currentSeries?: string;
+    currentSlug: string;
+}
+
+const { currentSeries, currentSlug } = Astro.props;
+
+// Initialize variables
+let seriesPosts: any[] = [];
+let currentSequence = "";
+let seriesName = "";
+let shouldRender = false;
+
+// Check if we should render
+if (currentSeries) {
+    // Parse series ID (format: seriesname-001)
+    const parts = currentSeries.split("-");
+    seriesName = parts[0];
+    currentSequence = parts[1] || "";
+
+    // Get all posts in this series
+    const allPosts = await getCollection("blog");
+    seriesPosts = allPosts
+        .filter((post) => post.data.series?.startsWith(seriesName + "-"))
+        .map((post) => ({
+            ...post,
+            sequence: parseInt(post.data.series?.split("-")[1] || "0"),
+        }))
+        .sort((a, b) => a.sequence - b.sequence);
+
+    // Only render if there are multiple posts in the series
+    shouldRender = seriesPosts.length > 1;
+}
+---
+
+{
+    shouldRender && (
+        <nav class="series-nav" aria-label="Series navigation">
+            <div class="series-header">
+                <svg
+                    class="series-icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                </svg>
+                <span class="series-title">
+                    Part {currentSequence} of {seriesPosts.length} in the{" "}
+                    <strong>{seriesName.replace(/-/g, " ")}</strong> series
+                </span>
+            </div>
+
+            <ol class="series-list">
+                {seriesPosts.map((post) => {
+                    const isCurrent = post.slug === currentSlug;
+                    return (
+                        <li
+                            class:list={["series-item", { current: isCurrent }]}
+                        >
+                            {isCurrent ? (
+                                <span class="series-link current">
+                                    <span class="series-number">
+                                        {post.sequence}.
+                                    </span>
+                                    <span class="series-post-title">
+                                        {post.data.title}
+                                    </span>
+                                    <span class="current-badge">
+                                        You are here
+                                    </span>
+                                </span>
+                            ) : (
+                                <a
+                                    href={`${import.meta.env.BASE_URL}posts/${post.slug}`}
+                                    class="series-link"
+                                >
+                                    <span class="series-number">
+                                        {post.sequence}.
+                                    </span>
+                                    <span class="series-post-title">
+                                        {post.data.title}
+                                    </span>
+                                </a>
+                            )}
+                        </li>
+                    );
+                })}
+            </ol>
+        </nav>
+    )
+}
+
+<style>
+    .series-nav {
+        margin: 2rem 0;
+        border: 1px solid #ebebeb;
+    }
+
+    .series-header {
+        background-color: #2a2a2a;
+        color: #fff;
+        padding: 10px 15px;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.875rem;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .series-icon {
+        flex-shrink: 0;
+    }
+
+    .series-title {
+        line-height: 1.4;
+    }
+
+    .series-title strong {
+        text-transform: capitalize;
+    }
+
+    .series-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        background: #fff;
+    }
+
+    .series-item {
+        border-bottom: 1px solid #ebebeb;
+    }
+
+    .series-item:last-child {
+        border-bottom: none;
+    }
+
+    .series-link {
+        display: flex;
+        align-items: baseline;
+        gap: 0.5rem;
+        padding: 5px 15px;
+        color: #e22d30;
+        text-decoration: none;
+        transition: background-color 0.2s ease;
+        line-height: 1.6;
+    }
+
+    .series-link:not(.current):hover {
+        background-color: #f8f8f8;
+    }
+
+    .series-link.current {
+        background-color: #fcfcfc;
+        color: #333;
+        font-weight: 600;
+        cursor: default;
+    }
+
+    .series-number {
+        font-weight: 700;
+        min-width: 1.5rem;
+        flex-shrink: 0;
+    }
+
+    .series-post-title {
+        flex: 1;
+    }
+
+    .current-badge {
+        font-size: 0.7rem;
+        background: #eee;
+        color: #666;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-left: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+        .series-nav {
+            margin: 1.5rem 0;
+        }
+
+        .series-header {
+            padding: 8px 12px;
+            font-size: 0.8rem;
+        }
+
+        .series-link {
+            padding: 4px 12px;
+            font-size: 0.9rem;
+        }
+
+        .series-number {
+            min-width: 1.2rem;
+        }
+    }
+</style>

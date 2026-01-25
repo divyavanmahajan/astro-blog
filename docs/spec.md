@@ -20,9 +20,12 @@ author: "Author Name"        # Optional if single author
 image: "/images/cover.jpg"   # For post thumbnail and SEO
 categories: ["Tech", "Life"] # Maps to main navigation
 tags: ["astro", "guide"]     # Maps to sidebar tag cloud
+series: "series-name-001"    # Optional: Series ID for multi-part posts (format: name-###)
 draft: false                 # Prevents build in production
 ---
 ```
+
+**Series Navigation**: For multi-part blog posts, use the `series` field to link related posts. Format: `{series-name}-{sequence}` (e.g., `react-guide-001`). See [series-navigation.md](./series-navigation.md) for details.
 
 ## 4. Design & UI Requirements
 **Reference**: [glukhov.org](https://www.glukhov.org) ("Mainroad" theme style)

@@ -134,3 +134,29 @@ If you update a blog post that was previously published:
 1.  The tool will automatically regenerate the files.
 2.  Check `update-summary.txt` for a generated "Article Update" announcement.
 3.  Manually update the LinkedIn article with the new content.
+
+---
+
+## 5. Converting HTML to Markdown
+
+If you have existing content in HTML format (e.g., from an old blog or CMS) and want to convert it to Markdown for this blog, you can use the helper script.
+
+### Prerequisites
+1.  Ensure you have **Python 3** installed.
+2.  Ensure **pandoc** is installed (`brew install pandoc`).
+
+### Usage
+Run the script from the root of the project:
+
+```bash
+# Basic usage (auto-names output)
+./scripts/convert_html.py path/to/input.html
+
+# Specify output filename
+./scripts/convert_html.py path/to/input.html path/to/output.md
+
+# Strip all HTML tags
+./scripts/convert_html.py path/to/input.html --clean
+```
+
+The script uses GitHub Flavored Markdown (GFM) format. Use `--clean` to remove any raw HTML tags that pandoc preserves by default.

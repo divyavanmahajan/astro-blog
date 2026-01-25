@@ -22,6 +22,7 @@ This project is a static site generated using **[Astro](https://astro.build/)**.
 │   │   ├── Sidebar.astro       # Sidebar with widgets
 │   │   ├── Search.astro        # Client-side search component
 │   │   ├── TableOfContents.astro # Post navigation TOC
+│   │   ├── SeriesNav.astro     # Series navigation for multi-part posts
 │   │   └── ProfileImage.astro  # Circular profile image
 │   ├── content/        # Markdown content source
 │   │   └── blog/       # Blog posts (organized by YYYY/MM/)
@@ -83,7 +84,33 @@ The blog includes a lightweight client-side search feature implemented in `src/c
 
 See [search.md](./search.md) for detailed implementation.
 
-## 6. Styling Architecture
+## 6. Series Navigation
+
+The blog supports multi-part series posts through the `SeriesNav` component, allowing readers to navigate between related posts in a logical sequence.
+
+**Key Features:**
+- Automatic series detection from frontmatter `series` field
+- Sequential ordering based on series ID format (`name-###`)
+- Visual indication of current position in series
+- Renders only when 2+ posts exist in a series
+- Displays before TOC and after post content
+
+**Implementation:**
+- Component: `src/components/SeriesNav.astro`
+- Series ID Format: `{series-name}-{sequence}` (e.g., `mainframe-modernization-001`)
+- Integration: Automatically included in post template (`src/pages/posts/[...slug].astro`)
+- Styling: Purple gradient background with responsive design
+
+**Technical Details:**
+- Queries all posts via `getCollection('blog')`
+- Filters by series name prefix
+- Sorts by parsed sequence number
+- Highlights current post with "You are here" badge
+- Provides navigation links to all other posts in series
+
+See [series-navigation.md](./series-navigation.md) for complete documentation.
+
+## 7. Styling Architecture
 
 -   **Global Styles**: `src/styles/global.css` defines CSS Variables (`--color-primary`, `--font-sans`) which control the widespread look and feel (The "Mainroad" theme).
 -   **Scoped Styles**: Each `.astro` component has a `<style>` block. These styles are scoped to the component (hashed classes) to prevent side-effects, ensuring modularity.

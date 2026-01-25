@@ -103,24 +103,7 @@ The replacement isn't one thing—it's a stack:
 
 ### CICS vs. Modern Service Architecture
 
-```mermaid
-graph LR
-    subgraph Mainframe ["Mainframe (Integrated)"]
-        CICS["CICS Execution Environment"]
-        CICS --- RACF["RACF (Security)"]
-        CICS --- DB2["DB2 (Data)"]
-        CICS --- WLM["WLM (Scheduling)"]
-    end
-
-    subgraph CloudNative ["Modern Stack (Decoupled)"]
-        App["Java App (Quarkus)"]
-        App -.-> Keycloak["Keycloak (IAM)"]
-        App -.-> RDS["RDS (Database)"]
-        App -.-> K8s["K8s (Scheduler)"]
-    end
-    
-    Mainframe -- Migration --> CloudNative
-```
+![Architectural Comparison: Mainframe (CICS) vs. Modern Cloud-Native (Java/Quarkus)](/images/architecture-comparison.png)
 
 ### Database Workload Replacement
 
@@ -286,9 +269,7 @@ public class AccountService {
 - **Default deny** - Nothing allowed unless explicitly permitted
 - **Full audit trail** - Every decision logged for compliance
 
-This approach gives you the maintainability and auditability of RACF with the flexibility of modern IAM systems.
-
-> **For a comprehensive guide to implementing RACF-style authorization with Keycloak, including detailed code examples, policy design, and comparison with SAP authorization, see: [Implementing RACF-Style Authorization in Modern Java Applications](/blog/2026/01/racf-style-authorization-modern-java)**
+This approach gives you the maintainability and auditability of RACF with the flexibility of modern IAM systems. See my other post for more details: [Implementing RACF-Style Authorization in Modern Java Applications](/blog/2026/01/racf-style-authorization-modern-java)**
 
 ## What Modern Complexity Is Actually Unnecessary
 
@@ -412,7 +393,7 @@ The question isn't whether we can modernize mainframe applications. The question
 
 **What patterns have you noticed in your modernization journeys? Share in the comments below!**
 
-If these architectural deep-dives help you, **follow me** for weekly insights on enterprise Java, legacy replacement, and building systems that last.
+If these architectural deep-dives help you, **follow me** for insights on enterprise architecture.
 
 `#MainframeModernization` `#SoftwareArchitecture` `#CloudNative` `#EnterpriseJava` `#TechLeadership`
 

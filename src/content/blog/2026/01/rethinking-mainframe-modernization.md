@@ -39,17 +39,15 @@ When replacing a COBOL/CICS/DB2 mainframe application, the guiding principles ar
 
 ### Technology Stack
 
-| Layer | Choice |
-|-------|--------|
-| Runtime | **Quarkus** (JVM mode initially) |
-| Architecture | **Modular Monolith** |
-| Domain | **Clean Architecture / DDD** |
-| Persistence | **JPA + RDBMS** (PostgreSQL/Oracle/DB2) |
-| Transactions | **JTA (Narayanas)** |
-| APIs | **JAX-RS** |
-| Messaging | **Kafka** |
-| Security | **OIDC / OAuth2** |
-| Deployment | **Containers** or VMs |
+- **Runtime**: Quarkus (JVM mode initially)
+- **Architecture**: Modular Monolith
+- **Domain**: Clean Architecture / DDD
+- **Persistence**: JPA + RDBMS (PostgreSQL/Oracle/DB2)
+- **Transactions**: JTA (Narayanas)
+- **APIs**: JAX-RS
+- **Messaging**: Kafka
+- **Security**: OIDC / OAuth2
+- **Deployment**: Containers or VMs
 
 ### Why Modular Monolith First?
 
@@ -88,22 +86,16 @@ People often underestimate CICS. It wasn't just "an app server":
 
 The replacement isn't one thing—it's a stack:
 
-| CICS Concept | Modern Replacement |
-|--------------|-------------------|
-| CICS program | Java service / use-case class |
-| CICS transaction | REST endpoint or message handler |
-| COMMAREA | Request DTO / command object |
-| Syncpoint | JTA transaction |
-| TSQ / TDQ | Database table / Kafka topic |
-| BMS screen | Web UI / API consumer |
-| CICS region | App instance / pod |
-| CICS security | IAM + OAuth + RBAC |
+- **CICS program**: Java service / use-case class
+- **CICS transaction**: REST endpoint or message handler
+- **COMMAREA**: Request DTO / command object
+- **Syncpoint**: JTA transaction
+- **TSQ / TDQ**: Database table / Kafka topic
+- **BMS screen**: Web UI / API consumer
+- **CICS region**: App instance / pod
+- **CICS security**: IAM + OAuth + RBAC
 
 **Key insight:** CICS transactions map cleanly to **short-lived stateless service calls**. The challenge is recreating CICS's *predictability*, not its APIs.
-
-### CICS vs. Modern Service Architecture
-
-![Architectural Comparison: Mainframe (CICS) vs. Modern Cloud-Native (Java/Quarkus)](/images/architecture-comparison.png)
 
 ### Database Workload Replacement
 
@@ -162,17 +154,14 @@ Less magic, more knobs. Neither approach is inherently wrong—they optimize for
 
 If you squint, the cloud is basically **IBM circa 1978 with better UX**:
 
-| Cloud Service | Mainframe Equivalent |
-|---------------|---------------------|
-| AWS Lambda / Azure Functions | CICS transactions |
-| RDS, Cloud SQL, Aurora | DB2 / VSAM datasets |
-| SQS, Pub/Sub, Service Bus | TSQ / TDQ |
-| Step Functions, Durable Functions | JCL workflows |
-| IAM, Azure AD | RACF |
-| CloudWatch, Stackdriver | SMF / RMF |
-| Auto-scaling groups | Workload Manager |
+- **AWS Lambda / Azure Functions**: CICS transactions
+- **RDS, Cloud SQL, Aurora**: DB2 / VSAM datasets
+- **SQS, Pub/Sub, Service Bus**: TSQ / TDQ
+- **Step Functions, Durable Functions**: JCL workflows
+- **IAM, Azure AD**: RACF
+- **CloudWatch, Stackdriver**: SMF / RMF
+- **Auto-scaling groups**: Workload Manager
 
-> [!IMPORTANT]
 > **The punchline:** Cloud re-bundled mainframe ideas and is selling them per hour.
 
 ## Building a Modular Monolith That Scales Like CICS

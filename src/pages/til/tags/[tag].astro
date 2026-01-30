@@ -182,4 +182,28 @@ const { tag, tils } = Astro.props;
         margin: 0;
         line-height: 1.5;
     }
+
+    @media (max-width: 768px) {
+        .tag-header {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+        }
+
+        .tag-header h1 {
+            font-size: 1.5rem;
+        }
+
+        .til-entry {
+            margin-bottom: 1px;
+            padding-bottom: 0.75rem;
+        }
+
+        .til-entry h3 {
+            font-size: 1rem;
+        }
+
+        .til-excerpt {
+            font-size: 0.85rem;
+        }
+    }
 </style>

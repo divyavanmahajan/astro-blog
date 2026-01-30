@@ -244,26 +244,40 @@ function formatDate(date: Date): string {
     }
 
     /* Mobile: stack layout, topics at bottom */
-    @media (max-width: 480px) {
+    @media (max-width: 768px) {
+        .til-header {
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+
         .til-layout {
             grid-template-columns: 1fr;
+            gap: 1rem;
         }
 
         .browse-topics {
             order: 2;
             position: static;
+            padding: 0.75rem;
         }
 
         .til-list {
             order: 1;
+            gap: 1px;
+        }
+
+        .til-entry {
+            padding: 0.75rem 0;
+            margin-bottom: 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .til-title {
+            font-size: 0.95rem;
         }
 
         .til-meta {
-            padding-left: 0;
-        }
-
-        .til-title-row {
-            flex-wrap: wrap;
+            font-size: 0.75rem;
         }
     }
 </style>

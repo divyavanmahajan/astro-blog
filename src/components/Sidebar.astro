@@ -45,7 +45,7 @@ const tags = [...new Set(allPosts.map((post) => post.data.tags).flat())];
             {
                 tags.map((tag) => (
                     <a
-                        href={`${import.meta.env.BASE_URL}tags/${tag}`}
+                        href={`${import.meta.env.BASE_URL}tags/${tag.toLowerCase()}/`}
                         class="tag-link"
                     >
                         {tag}

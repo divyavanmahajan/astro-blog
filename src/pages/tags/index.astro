@@ -68,7 +68,9 @@ const sortedTags = Array.from(tags.values()).sort((a, b) =>
                 >
                     <div class="tag-header">
                         <h2>
-                            <a href={`${import.meta.env.BASE_URL}tags/${tag}/`}>
+                            <a
+                                href={`${import.meta.env.BASE_URL}tags/${tag.name.toLowerCase()}/`}
+                            >
                                 {tag.name}
                             </a>
                         </h2>

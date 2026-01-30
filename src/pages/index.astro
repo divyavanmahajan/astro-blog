@@ -70,7 +70,7 @@ const posts = (await getCollection("blog"))
 
                     <div class="entry-content">
                         {post.data.heroImage && (
-                            <div class="entry-thumbnail text-center">
+                            <div class="entry-thumbnail">
                                 <img
                                     src={`${import.meta.env.BASE_URL}images/icon/${post.data.heroImage.split("/").pop()}`}
                                     alt={post.data.title}
@@ -78,17 +78,18 @@ const posts = (await getCollection("blog"))
                                 />
                             </div>
                         )}
-                        <p>{post.data.description}</p>
+                        <div class="entry-summary">
+                            <p>
+                                {post.data.description}
+                                <a
+                                    href={`${import.meta.env.BASE_URL}posts/${post.slug}/`}
+                                    class="read-more-link"
+                                >
+                                    Read more...
+                                </a>
+                            </p>
+                        </div>
                     </div>
-
-                    <footer class="entry-footer">
-                        <a
-                            href={`${import.meta.env.BASE_URL}posts/${post.slug}/`}
-                            class="read-more"
-                        >
-                            Read more...
-                        </a>
-                    </footer>
                 </article>
             ))
         }
@@ -97,15 +98,15 @@ const posts = (await getCollection("blog"))
 
 <style>
     .post-entry {
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
         background: #fff;
-        padding: 2rem;
+        padding: 1.25rem;
         border: 1px solid var(--color-border);
     }
 
     .entry-title {
-        font-size: 1.75rem;
-        margin-bottom: 0.5rem;
+        font-size: 1.5rem;
+        margin-bottom: 0.25rem;
     }
 
     .entry-title a {
@@ -119,8 +120,8 @@ const posts = (await getCollection("blog"))
 
     .entry-meta {
         color: var(--color-text-light);
-        font-size: 0.85rem;
-        margin-bottom: 1rem;
+        font-size: 0.8rem;
+        margin-bottom: 0.75rem;
         text-transform: uppercase;
         display: flex;
         flex-wrap: wrap;
@@ -146,46 +147,54 @@ const posts = (await getCollection("blog"))
         text-decoration: underline;
     }
 
-    .entry-footer {
-        margin-top: 1.5rem;
-    }
-
     .entry-content {
         display: flex;
-        gap: 1.5rem;
+        gap: 1rem;
         align-items: flex-start;
     }
 
     .entry-thumbnail {
         flex-shrink: 0;
-        width: 250px;
+        width: 72px; /* Matches 3 lines of text (3 * 1.5 line-height * 16px) */
+        height: 72px;
     }
 
     .post-thumbnail {
         width: 100%;
-        height: auto;
+        height: 100%;
+        object-fit: cover;
         border: 1px solid var(--color-border);
         border-radius: 4px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     }
 
-    .entry-content p {
+    .entry-summary {
+        position: relative;
+        flex-grow: 1;
+    }
+
+    .entry-summary p {
         margin: 0;
-        line-height: 1.6;
+        line-height: 1.5;
+        height: 4.5em; /* Exactly 3 lines (3 * 1.5 line-height) */
+        overflow: hidden;
+        text-align: justify; /* Helps align the link nicely if user prefers, but standard also works */
     }
 
-    .read-more {
-        background: var(--color-primary);
-        color: #fff;
-        padding: 0.5rem 1rem;
+    .read-more-link {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background: linear-gradient(to right, transparent, #fff 20%, #fff);
+        padding-left: 1.5rem;
+        color: var(--color-primary);
         font-weight: 600;
-        border-radius: 2px;
-        font-size: 0.9rem;
+        text-decoration: none;
+        white-space: nowrap;
     }
 
-    .read-more:hover {
-        background: #cc292b;
-        text-decoration: none;
+    .read-more-link:hover {
+        text-decoration: underline;
     }
 
     /* Mobile adjustments */

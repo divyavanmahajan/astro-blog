@@ -18,6 +18,14 @@ allTils.forEach((til) => {
 const sortedTags = Array.from(tagCounts.entries()).sort((a, b) =>
     a[0].localeCompare(b[0]),
 );
+
+// Format date as dd-mm-yyyy
+function formatDate(date: Date): string {
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+}
 ---
 
 <BaseLayout
@@ -27,129 +35,188 @@ const sortedTags = Array.from(tagCounts.entries()).sort((a, b) =>
 >
     <div class="til-page">
         <header class="til-header">
-            <h1>TIL (Today I Learned)</h1>
-            <p class="til-intro">
+            <a
+                href={import.meta.env.BASE_URL + "til/rss.xml"}
+                class="rss-icon"
+                title="Atom feed"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                >
+                    <circle cx="6.18" cy="17.82" r="2.18"></circle>
+                    <path
+                        d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"
+                    ></path>
+                </svg>
+            </a>
+            <span class="til-intro">
                 Quick notes about things I've learned. You may also enjoy <a
                     href={import.meta.env.BASE_URL}>my blog</a
                 >.
-            </p>
-            <p class="feed-link">
-                <a href={import.meta.env.BASE_URL + "til/rss.xml"}>
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                    >
-                        <circle cx="6.18" cy="17.82" r="2.18"></circle>
-                        <path
-                            d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"
-                        ></path>
-                    </svg>
-                    Atom feed
-                </a>
-            </p>
+            </span>
         </header>
 
-        <section class="browse-topics">
-            <h2>Browse by topic:</h2>
-            <div class="tag-cloud">
-                {
-                    sortedTags.map(([tag, count]) => (
-                        <a
-                            href={`${import.meta.env.BASE_URL}til/tags/${tag}/`}
-                            class="tag-link"
-                        >
-                            {tag} <span class="count">{count}</span>
-                        </a>
-                    ))
-                }
-            </div>
-        </section>
-
-        <section class="recent-tils">
-            <h2>Recent TILs</h2>
-            <div class="til-list">
+        <div class="til-layout">
+            <section class="til-list">
                 {
                     allTils.map((til) => (
                         <article class="til-entry">
-                            <div class="til-tags">
-                                {til.data.tags.map((tag) => (
-                                    <a
-                                        href={`${import.meta.env.BASE_URL}til/tags/${tag}/`}
-                                        class="tag-badge"
-                                    >
-                                        {tag}
-                                    </a>
-                                ))}
-                            </div>
-                            <h3>
-                                <a
-                                    href={`${import.meta.env.BASE_URL}til/${til.slug}/`}
-                                >
-                                    {til.data.title}
-                                </a>
+                            <a
+                                href={`${import.meta.env.BASE_URL}til/${til.slug}/`}
+                                class="til-title"
+                            >
+                                {til.data.title}
+                            </a>
+                            <div class="til-meta">
                                 <span class="til-date">
-                                    -{" "}
-                                    {til.data.pubDate.toLocaleDateString(
-                                        "en-us",
-                                        {
-                                            year: "numeric",
-                                            month: "short",
-                                            day: "numeric",
-                                        },
-                                    )}
+                                    {formatDate(til.data.pubDate)}
                                 </span>
-                            </h3>
-                            <p class="til-excerpt">{til.data.description}</p>
+                                <span class="til-separator">·</span>
+                                <a
+                                    href={`${import.meta.env.BASE_URL}til/tags/${til.data.tags[0]}/`}
+                                    class="tag-inline"
+                                >
+                                    {til.data.tags[0]}
+                                </a>
+                                <span class="til-separator">·</span>
+                                <span class="til-excerpt">
+                                    {til.data.description}
+                                </span>
+                            </div>
                         </article>
                     ))
                 }
-            </div>
-        </section>
+            </section>
+
+            <aside class="browse-topics">
+                <h2>Browse by topic</h2>
+                <div class="tag-cloud">
+                    {
+                        sortedTags.map(([tag, count]) => (
+                            <a
+                                href={`${import.meta.env.BASE_URL}til/tags/${tag}/`}
+                                class="tag-link"
+                            >
+                                {tag} <span class="count">{count}</span>
+                            </a>
+                        ))
+                    }
+                </div>
+            </aside>
+        </div>
     </div>
 </BaseLayout>
 
 <style>
     .til-page {
-        max-width: 800px;
+        max-width: 1000px;
     }
 
     .til-header {
-        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--color-border);
     }
 
-    .til-header h1 {
-        font-size: 2.5rem;
-        margin-bottom: 0.5rem;
+    .rss-icon {
+        color: #f26522;
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+    }
+
+    .rss-icon:hover {
+        opacity: 0.8;
     }
 
     .til-intro {
         color: var(--color-text-light);
-        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
     }
 
-    .feed-link a {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
+    .til-intro a {
         color: var(--color-primary);
-        font-size: 0.9rem;
     }
 
-    .feed-link svg {
-        color: #f26522;
+    /* Two-column layout */
+    .til-layout {
+        display: grid;
+        grid-template-columns: 1fr 220px;
+        gap: 2rem;
+        align-items: start;
     }
 
+    /* TIL entries */
+    .til-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .til-entry {
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    .til-entry:last-child {
+        border-bottom: none;
+    }
+
+    .til-title {
+        display: block;
+        color: var(--color-text);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1rem;
+        margin-bottom: 0.2rem;
+    }
+
+    .til-title:hover {
+        color: var(--color-primary);
+    }
+
+    .til-meta {
+        font-size: 0.85rem;
+        color: var(--color-text-light);
+    }
+
+    .til-date {
+        font-family: monospace;
+        font-size: 0.8rem;
+    }
+
+    .til-separator {
+        margin: 0 0.4rem;
+    }
+
+    .tag-inline {
+        color: var(--color-primary);
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .tag-inline:hover {
+        text-decoration: underline;
+    }
+
+    /* Sidebar */
     .browse-topics {
-        margin-bottom: 2.5rem;
-        padding-bottom: 2rem;
-        border-bottom: 1px solid var(--color-border);
+        background: var(--color-bg-light, #f9f9f9);
+        padding: 1rem;
+        border-radius: 8px;
+        position: sticky;
+        top: 1rem;
     }
 
     .browse-topics h2 {
-        font-size: 1rem;
+        font-size: 0.9rem;
         font-weight: 600;
         margin-bottom: 0.75rem;
         color: var(--color-text);
@@ -157,15 +224,14 @@ const sortedTags = Array.from(tagCounts.entries()).sort((a, b) =>
 
     .tag-cloud {
         display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        line-height: 1.8;
+        flex-direction: column;
+        gap: 0.4rem;
     }
 
     .tag-link {
         color: var(--color-primary);
         text-decoration: none;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
     }
 
     .tag-link:hover {
@@ -174,87 +240,30 @@ const sortedTags = Array.from(tagCounts.entries()).sort((a, b) =>
 
     .tag-link .count {
         color: var(--color-text-light);
-        font-size: 0.8rem;
-    }
-
-    .tag-link::after {
-        content: " · ";
-        color: var(--color-text-light);
-    }
-
-    .tag-link:last-child::after {
-        content: "";
-    }
-
-    .recent-tils h2 {
-        font-size: 1.5rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .til-entry {
-        margin-bottom: 1.5rem;
-        padding-bottom: 1.5rem;
-        border-bottom: 1px solid #eee;
-    }
-
-    .til-entry:last-child {
-        border-bottom: none;
-    }
-
-    .til-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.4rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .tag-badge {
-        background: var(--color-secondary);
-        color: #fff;
-        padding: 0.15rem 0.5rem;
-        border-radius: 3px;
         font-size: 0.75rem;
-        text-decoration: none;
-        font-weight: 500;
     }
 
-    .tag-badge:hover {
-        background: #444;
-        color: #fff;
-        text-decoration: none;
-    }
+    /* Mobile: stack layout, topics at bottom */
+    @media (max-width: 480px) {
+        .til-layout {
+            grid-template-columns: 1fr;
+        }
 
-    .til-entry h3 {
-        font-size: 1.1rem;
-        margin: 0 0 0.5rem 0;
-        font-weight: 600;
-    }
+        .browse-topics {
+            order: 2;
+            position: static;
+        }
 
-    .til-entry h3 a {
-        color: var(--color-text);
-        text-decoration: none;
-    }
+        .til-list {
+            order: 1;
+        }
 
-    .til-entry h3 a:hover {
-        color: var(--color-primary);
-    }
+        .til-meta {
+            padding-left: 0;
+        }
 
-    .til-date {
-        color: var(--color-text-light);
-        font-weight: 400;
-        font-size: 0.9rem;
-    }
-
-    .til-excerpt {
-        color: var(--color-text-light);
-        font-size: 0.95rem;
-        margin: 0;
-        line-height: 1.5;
-    }
-
-    @media (max-width: 600px) {
-        .til-header h1 {
-            font-size: 2rem;
+        .til-title-row {
+            flex-wrap: wrap;
         }
     }
 </style>

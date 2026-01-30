@@ -8,7 +8,7 @@ categories: ["Security", "Architecture"]
 heroImage: "/images/racf-style-authorization.png"
 author: "Divya van Mahajan"
 series: "modernization-003"
-linkedin: true
+linkedin: false
 linkedinMessage: "Modernization 3: RACF-style authorization in modern Java applications"
 ---
 

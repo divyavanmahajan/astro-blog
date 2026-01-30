@@ -21,4 +21,17 @@ const blog = defineCollection({
 	}),
 });
 
-export const collections = { blog };
+// TIL (Today I Learned) collection - simpler schema for quick notes
+const til = defineCollection({
+	type: 'content',
+	schema: z.object({
+		title: z.string(),
+		description: z.string(),
+		pubDate: z.coerce.date(),
+		updatedDate: z.coerce.date().optional(),
+		tags: z.array(z.string()),
+		draft: z.boolean().default(false),
+	}),
+});
+
+export const collections = { blog, til };

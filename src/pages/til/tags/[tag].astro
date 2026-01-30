@@ -1,0 +1,185 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+    const allTils = await getCollection("til");
+
+    // Get all unique tags
+    const tags = new Set<string>();
+    allTils.forEach((til) => {
+        til.data.tags.forEach((tag) => tags.add(tag));
+    });
+
+    return Array.from(tags).map((tag) => ({
+        params: { tag },
+        props: {
+            tag,
+            tils: allTils
+                .filter((til) => !til.data.draft && til.data.tags.includes(tag))
+                .sort(
+                    (a, b) =>
+                        b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+                ),
+        },
+    }));
+}
+
+const { tag, tils } = Astro.props;
+---
+
+<BaseLayout
+    title={`TIL tagged "${tag}"`}
+    description={`All TIL entries tagged with ${tag}`}
+    withSidebar={false}
+>
+    <div class="til-tag-page">
+        <header class="tag-header">
+            <a href={import.meta.env.BASE_URL + "til/"} class="back-link"
+                >← Back to TIL</a
+            >
+            <h1>TIL: {tag}</h1>
+            <p class="tag-count">
+                {tils.length}
+                {tils.length === 1 ? "entry" : "entries"}
+            </p>
+        </header>
+
+        <div class="til-list">
+            {
+                tils.map((til) => (
+                    <article class="til-entry">
+                        <div class="til-tags">
+                            {til.data.tags.map((t) => (
+                                <a
+                                    href={`${import.meta.env.BASE_URL}til/tags/${t}/`}
+                                    class:list={[
+                                        "tag-badge",
+                                        { active: t === tag },
+                                    ]}
+                                >
+                                    {t}
+                                </a>
+                            ))}
+                        </div>
+                        <h3>
+                            <a
+                                href={`${import.meta.env.BASE_URL}til/${til.slug}/`}
+                            >
+                                {til.data.title}
+                            </a>
+                            <span class="til-date">
+                                -{" "}
+                                {til.data.pubDate.toLocaleDateString("en-us", {
+                                    year: "numeric",
+                                    month: "short",
+                                    day: "numeric",
+                                })}
+                            </span>
+                        </h3>
+                        <p class="til-excerpt">{til.data.description}</p>
+                    </article>
+                ))
+            }
+        </div>
+    </div>
+</BaseLayout>
+
+<style>
+    .til-tag-page {
+        max-width: 800px;
+    }
+
+    .tag-header {
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .back-link {
+        display: inline-block;
+        margin-bottom: 1rem;
+        color: var(--color-primary);
+        text-decoration: none;
+        font-size: 0.9rem;
+    }
+
+    .back-link:hover {
+        text-decoration: underline;
+    }
+
+    .tag-header h1 {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .tag-count {
+        color: var(--color-text-light);
+        margin: 0;
+    }
+
+    .til-entry {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    .til-entry:last-child {
+        border-bottom: none;
+    }
+
+    .til-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .tag-badge {
+        background: var(--color-secondary);
+        color: #fff;
+        padding: 0.15rem 0.5rem;
+        border-radius: 3px;
+        font-size: 0.75rem;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .tag-badge:hover {
+        background: #444;
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .tag-badge.active {
+        background: var(--color-primary);
+    }
+
+    .til-entry h3 {
+        font-size: 1.1rem;
+        margin: 0 0 0.5rem 0;
+        font-weight: 600;
+    }
+
+    .til-entry h3 a {
+        color: var(--color-text);
+        text-decoration: none;
+    }
+
+    .til-entry h3 a:hover {
+        color: var(--color-primary);
+    }
+
+    .til-date {
+        color: var(--color-text-light);
+        font-weight: 400;
+        font-size: 0.9rem;
+    }
+
+    .til-excerpt {
+        color: var(--color-text-light);
+        font-size: 0.95rem;
+        margin: 0;
+        line-height: 1.5;
+    }
+</style>

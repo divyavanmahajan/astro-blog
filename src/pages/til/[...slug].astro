@@ -1,0 +1,173 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+    const tils = await getCollection("til");
+    return tils.map((til) => ({
+        params: { slug: til.slug },
+        props: { til },
+    }));
+}
+
+const { til } = Astro.props;
+const { Content } = await til.render();
+
+const displayDate = til.data.updatedDate || til.data.pubDate;
+const dateLabel = til.data.updatedDate ? "Updated" : "Published";
+---
+
+<BaseLayout
+    title={til.data.title}
+    description={til.data.description}
+    withSidebar={false}
+>
+    <article class="til-post">
+        <header class="til-post-header">
+            <h1>{til.data.title}</h1>
+            <div class="til-meta">
+                <time datetime={displayDate.toISOString()}>
+                    {dateLabel}: {
+                        displayDate.toLocaleDateString("en-us", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                        })
+                    }
+                </time>
+            </div>
+            <div class="til-tags">
+                {
+                    til.data.tags.map((tag) => (
+                        <a
+                            href={`${import.meta.env.BASE_URL}til/tags/${tag}/`}
+                            class="tag-badge"
+                        >
+                            {tag}
+                        </a>
+                    ))
+                }
+            </div>
+        </header>
+
+        <div class="til-content">
+            <Content />
+        </div>
+
+        <footer class="til-footer">
+            <a href={import.meta.env.BASE_URL + "til/"}>← Back to TIL</a>
+        </footer>
+    </article>
+</BaseLayout>
+
+<style>
+    .til-post {
+        max-width: 800px;
+    }
+
+    .til-post-header {
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .til-post-header h1 {
+        font-size: 2rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .til-meta {
+        color: var(--color-text-light);
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+
+    .til-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .tag-badge {
+        background: var(--color-secondary);
+        color: #fff;
+        padding: 0.2rem 0.6rem;
+        border-radius: 3px;
+        font-size: 0.8rem;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .tag-badge:hover {
+        background: #444;
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .til-content {
+        line-height: 1.7;
+    }
+
+    .til-content :global(h2) {
+        font-size: 1.4rem;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .til-content :global(h3) {
+        font-size: 1.2rem;
+        margin-top: 1.5rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .til-content :global(pre) {
+        background: #f5f5f5;
+        padding: 1rem;
+        overflow-x: auto;
+        border-radius: 4px;
+        font-size: 0.9rem;
+    }
+
+    .til-content :global(code) {
+        background: #f0f0f0;
+        padding: 0.15rem 0.3rem;
+        border-radius: 3px;
+        font-size: 0.9em;
+    }
+
+    .til-content :global(pre code) {
+        background: none;
+        padding: 0;
+    }
+
+    .til-content :global(ul),
+    .til-content :global(ol) {
+        margin: 1rem 0;
+        padding-left: 1.5rem;
+    }
+
+    .til-content :global(li) {
+        margin-bottom: 0.5rem;
+    }
+
+    .til-footer {
+        margin-top: 3rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--color-border);
+    }
+
+    .til-footer a {
+        color: var(--color-primary);
+        text-decoration: none;
+    }
+
+    .til-footer a:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+        .til-post-header h1 {
+            font-size: 1.6rem;
+        }
+    }
+</style>

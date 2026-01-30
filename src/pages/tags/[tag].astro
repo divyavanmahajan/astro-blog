@@ -180,4 +180,37 @@ const { BASE_URL } = import.meta.env;
     .read-more-link:hover {
         text-decoration: underline;
     }
+
+    /* Mobile adjustments */
+    @media (max-width: 768px) {
+        .post-entry {
+            margin-bottom: 1px;
+            padding: 0.75rem 1rem;
+        }
+
+        .entry-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.1rem;
+        }
+
+        .entry-meta {
+            margin-bottom: 0.4rem;
+            font-size: 0.7rem;
+        }
+
+        .entry-thumbnail {
+            width: 24px;
+            height: 24px;
+        }
+
+        .entry-summary p {
+            height: 3em;
+            font-size: 0.9rem;
+        }
+
+        .read-more-link {
+            font-size: 0.8rem;
+            padding-left: 1rem;
+        }
+    }
 </style>

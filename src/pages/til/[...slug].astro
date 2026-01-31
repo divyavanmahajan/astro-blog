@@ -166,8 +166,26 @@ const dateLabel = til.data.updatedDate ? "Updated" : "Published";
     }
 
     @media (max-width: 600px) {
+        .til-post-header {
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+        }
+
         .til-post-header h1 {
-            font-size: 1.6rem;
+            font-size: 1rem;
+            text-transform: uppercase;
+        }
+
+        .til-content :global(h2),
+        .til-content :global(h3) {
+            margin-top: 1rem;
+            margin-bottom: 0.25rem;
+            font-size: 1.05rem;
+            text-transform: uppercase;
+        }
+
+        .til-content :global(p) {
+            margin-bottom: 0.5rem;
         }
     }
 </style>

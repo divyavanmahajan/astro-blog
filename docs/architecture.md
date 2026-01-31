@@ -25,36 +25,39 @@ This project is a static site generated using **[Astro](https://astro.build/)**.
 │   │   ├── SeriesNav.astro     # Series navigation for multi-part posts
 │   │   └── ProfileImage.astro  # Circular profile image
 │   ├── content/        # Markdown content source
-│   │   └── blog/       # Blog posts (organized by YYYY/MM/)
+│   │   ├── blog/       # Blog posts (organized by YYYY/MM/)
+│   │   └── til/        # TIL notes
 │   │   └── config.ts   # Content Collection Schema (Zod)
 │   ├── layouts/        # Page wrappers (BaseLayout.astro)
 │   ├── pages/          # File-based routing
 │   │   ├── index.astro         # Homepage
 │   │   ├── about.astro         # About page
-│   │   ├── categories/         # Category overview and dynamic pages
-│   │   ├── series/             # Series overview and dynamic pages
+│   │   ├── categories/         # Category discovery
+│   │   ├── series/             # Series discovery
+│   │   ├── til/                # TIL index and dynamic pages
 │   │   └── posts/
 │   │       └── [...slug].astro # Dynamic Post pages
 │   └── styles/         # Global CSS (Variables, Reset)
 ├── docs/               # Project documentation
 │   ├── architecture.md # Technical architecture
 │   ├── spec.md         # Requirements specification
-│   ├── search.md       # Search implementation
-│   └── styling.md      # Design system
-├── astro.config.mjs    # Astro configuration (Site URL, Base path)
+│   ├── styling.md      # Design system
+│   └── {issue-number}/ # Task-specific documentation (task, plan, walkthrough)
+├── astro.config.mjs    # Astro configuration
 └── .github/            # CI/CD Workflows
 ```
 
 ## 3. Data Flow
 
-1.  **Authoring**: Content is written in Markdown files in `src/content/blog/ (organized by YYYY/MM/)`.
-2.  **Validation**: `src/content/config.ts` defines a **Zod schema**. Astro validates all frontmatter at build time, preventing broken builds due to missing fields (e.g., missing `title` or invalid `date`).
-3.  **Collection API**: Pages query data using `getCollection('blog')`.
+1.  **Authoring**: Content is written in Markdown files. Blog posts are organized in `src/content/blog/YYYY/MM/`, while quick notes go in `src/content/til/`.
+2.  **Validation**: `src/content/config.ts` defines **Zod schemas** for both `blog` and `til` collections. Astro validates all frontmatter at build time.
+3.  **Collection API**: Pages query data using `getCollection('blog')` or `getCollection('til')`.
 4.  **Routing**:
-    -   `index.astro` pulls all published posts and displays them, including series badges for multi-part content.
-    -   `[...slug].astro` generates a unique page for every post found in the collection.
-    -   `categories/index.astro` and `categories/[category].astro` provide category-based discovery.
-    -   `series/index.astro` and `series/[series].astro` provide series-based discovery.
+    -   `index.astro`: Displays blog posts with series badges.
+    -   `posts/[...slug].astro`: Dynamic pages for blog posts.
+    -   `til/index.astro` & `til/[...slug].astro`: Index and dynamic pages for TIL notes.
+    -   `categories/` & `series/`: Dynamic discovery pages for taxonomies.
+    -   `til/tags/`: Dynamic discovery pages for TIL-specific tags.
 
 ## 4. Deployment Pipeline
 
@@ -119,5 +122,25 @@ See [series-navigation.md](./series-navigation.md) for complete documentation.
 
 ## 7. Styling Architecture
 
--   **Global Styles**: `src/styles/global.css` defines CSS Variables (`--color-primary`, `--font-sans`) which control the widespread look and feel (The "Mainroad" theme).
--   **Scoped Styles**: Each `.astro` component has a `<style>` block. These styles are scoped to the component (hashed classes) to prevent side-effects, ensuring modularity.
+-   **Global Styles**: `src/styles/global.css` defines CSS Variables controling the widespread look and feel. It includes a global `box-sizing: border-box` reset and layout constraints for responsiveness.
+-   **Scoped Styles**: These styles are scoped to the component (hashed classes) to prevent side-effects, ensuring modularity.
+
+## 8. TIL (Today I Learned)
+
+The TIL section is designed for quick, bite-sized learnings that don't warrant a full blog post.
+
+**Key Features:**
+- Separate content collection (`til`) with a simplified schema.
+- Dedicated RSS feed (`til/rss.xml`).
+- Tag-based discovery sidebar with post counts.
+- Standardized styling that matches the blog's mobile typography.
+
+## 9. Mobile-First Layout
+
+The blog employs several strategies to ensure a premium experience on small screens:
+
+- **Constraint-Based Grid**: Uses `minmax(0, 1fr)` for mobile columns to prevent wide content (like code blocks) from stretching the viewport.
+- **Header Standardization**: All post and TIL headers (H1, H2, H3) are standardized to 1rem/1.05rem, uppercase, and bold for a clean, consistent look.
+- **Padding Normalization**: Uses a site-wide `1rem` container padding on mobile to align text perfectly with navigation elements.
+- **Hero Image Scaling**: Hero images are displayed on mobile but constrained to a height of `240px` to maintain page density.
+- **Internal Scrolling**: Code blocks (`pre`/`code`) use `max-width: 100%` and `overflow-x: auto` to allow internal scrolling without horizontal page scroll.

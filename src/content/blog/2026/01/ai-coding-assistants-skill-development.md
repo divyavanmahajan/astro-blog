@@ -1,6 +1,6 @@
 ---
 title: "The Hidden Cost of AI Coding Assistants: What Anthropic's Research Reveals"
-description: "A deep dive into Anthropic's study showing how AI assistance can hinder skill development for developers learning new technologies."
+description: "Anthropic's study found that AI assistance hinders skill development for developers learning new technologies."
 pubDate: 2026-01-30
 author: "Divya van Mahajan"
 categories: ["Coding"]

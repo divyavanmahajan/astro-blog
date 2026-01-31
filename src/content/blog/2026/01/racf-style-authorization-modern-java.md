@@ -12,8 +12,6 @@ linkedin: false
 linkedinMessage: "Modernization 3: RACF-style authorization in modern Java applications"
 ---
 
-![RACF-Style Authorization](/images/racf-style-authorization.png)
-
 ## Introduction
 
 Modern applications often struggle with authorization complexity—scattered `@RolesAllowed` annotations, hardcoded role checks, and no clear audit trail of *why* a decision was made. Yet decades ago, mainframe systems solved this problem elegantly with RACF (Resource Access Control Facility).

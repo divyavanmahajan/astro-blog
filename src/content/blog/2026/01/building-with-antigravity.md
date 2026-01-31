@@ -11,8 +11,6 @@ linkedinMessage: "Building a markdown blog with Astro and Antigravity from spec 
 linkedinArticleUrl: "https://www.linkedin.com/pulse/building-blog-antigravity-divya-van-mahajan-vkpfe/"
 ---
 
-![Astro + Antigravity = Webpage](/images/building-with-antigravity-hero.png)
-
 I am passionate about building things and learning new things. I was inspired by [Rost Glukhov](https://glukhov.org) and [Simon Willison](https://simonwillison.net), to record and share what I've learnt. I set myself a goal to create a blog infrastructure that was low maintenance and easy to use.
                 
 Welcome to a meta-post about how I created my blog which is hosted at [https://vanmahajan.de](https://vanmahajan.de) and [https://divyavanmahajan.github.io/](https://divyavanmahajan.github.io/). 

@@ -14,8 +14,6 @@ linkedinMessage: "Modernization 2: Mainframe Modernization: will we do it right?
 linkedInUrl: "https://www.linkedin.com/pulse/mainframe-modernization-we-do-right-divya-van-mahajan-tjdxe"
 ---
 
-![Rethinking Mainframe Modernization](/images/rethinking-mainframe-modernization.png)
-
 ## Introduction
 
 What if 80% of your microservices should actually be a **modular monolith**? 

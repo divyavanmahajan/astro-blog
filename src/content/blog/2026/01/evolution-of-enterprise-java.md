@@ -12,8 +12,6 @@ linkedin: true
 linkedinMessage: "Modernization 1:Evolution of Enterprise Java: From EJB to Quarkus"
 ---
 
-![How Enterprise Java Evolved: EJB to Quarkus](/images/java-evolution.png)
-
 # Introduction
 
 Enterprise Java was once synonymous with "heavyweight complexity" and "slow developer cycles." EJB promised the world—distributed transactions, declarative security, and clustering—but delivered a developer experience so painful it nearly broke the ecosystem.

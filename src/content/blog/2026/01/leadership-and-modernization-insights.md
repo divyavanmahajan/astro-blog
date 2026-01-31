@@ -10,8 +10,6 @@ author: "Divya van Mahajan"
 series: "modernization-004"
 ---
 
-![Leadership and Modernization](/images/leadership-modernization-insights.png)
-
 # Introduction
 
 In the high-stakes landscape of 2026, modernization is no longer just a technical challenge. It has become a leadership test. We often find ourselves at a crossroads where the speed of technology exceeds the organization's ability to absorb change. This post gathers insights that I've read from the web and my experience. 

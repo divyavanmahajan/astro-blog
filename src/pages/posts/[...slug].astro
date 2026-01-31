@@ -33,6 +33,12 @@ const { Content, headings } = await post.render();
             </div>
         </header>
 
+        {post.data.heroImage && (
+            <div class="post-hero">
+                <img src={post.data.heroImage} alt={post.data.heroImageAlt || post.data.title} />
+            </div>
+        )}
+
         <SeriesNav currentSeries={post.data.series} currentSlug={post.slug} />
 
         <TableOfContents headings={headings} />

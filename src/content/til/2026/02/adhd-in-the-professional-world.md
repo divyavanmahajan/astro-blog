@@ -3,7 +3,7 @@ title: "ADHD in the Professional World: Challenges and Strengths"
 description: "TIL about how ADHD impacts career development, common workplace challenges, and the unique strengths neurodivergent individuals bring to the table."
 pubDate: 2026-01-31
 tags: ["adhd", "career", "productivity", "mental-health", "neurodiversity"]
-draft: false
+draft: true
 ---
 
 I recently came across an insightful article about the impact of ADHD on professional life and career development. It highlights that ADHD is not just about a lack of focus, but a different way of processing information and interacting with environments.

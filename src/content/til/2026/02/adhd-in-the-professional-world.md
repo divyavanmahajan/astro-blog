@@ -8,6 +8,10 @@ draft: false
 
 I recently came across an insightful article about the impact of ADHD on professional life and career development. It highlights that ADHD is not just about a lack of focus, but a different way of processing information and interacting with environments.
 
+*This TIL was based on a summary of the following German article:* 
+[ADHS und Beruf - Praxis Neuy](https://praxis-neuy.de/adhs/adhs-und-beruf/)
+***
+
 ### The Challenges
 The article points out several common hurdles for professionals with ADHD:
 - **Self-Organization**: Difficulty managing complex administrative tasks, leading to the "accumulation of piles" on desks and in digital workspaces.
@@ -26,52 +30,105 @@ Similarly, professionals with ADHD often thrive when they find their "element":
 ### Finding the Right Environment
 The key to success is finding an environment that minimizes monotonous routine and maximizes variety and excitement. Clear boundaries, structured workflows, and specific deadlines help, but an authoritarian leadership style is often counterproductive.
 
-*This TIL was based on a summary of the following German article:* 
-[ADHS und Beruf - Praxis Neuy](https://praxis-neuy.de/adhs/adhs-und-beruf/)
+***
 
-### Related resources (German language)
-If you don't speak German, you can use a translation tool to read these resources.
+### Detailed notes
 
-- [ADHS und Beruf - Praxis Neuy](https://praxis-neuy.de/adhs/adhs-und-beruf/)
-**Literatur:**
+People with ADHD often struggle throughout school, training, and later in their careers. Although they typically have normal or high intelligence, their academic and professional achievements may be lower due to difficulties with motivation, self‑organization, and sustained concentration.
 
-- Caoline Bonnes: die Berufliche Entwicklung  von Menschen mit ADHS
-- Lynn Weiss: ADS im Job
+**Why ADHD Causes Problems at Work**
 
-- [ADHS-Informationen](https://praxis-neuy.de/adhs/)
-- [ADHS im Alter](https://praxis-neuy.de/adhs/adhs-im-alter/)
-- [ADHS und Autismus](https://praxis-neuy.de/adhs/adhs-und-autismus/)
-- [ADHS und Ausbildung](https://praxis-neuy.de/adhs/ausbildung/)
-- [ADHS und Beruf](https://praxis-neuy.de/adhs/adhs-und-beruf/)
-- [ADHS und
-  Depression](https://praxis-neuy.de/adhs/adhs-und-depression/)
-- [ADHS bei
-  Erwachsenen](https://praxis-neuy.de/adhs/adhs-bei-erwachsenen/)
-- [ADHS bei Frauen](https://praxis-neuy.de/adhs/adhs-bei-frauen/)
-- [ADHS bei Kindern](https://praxis-neuy.de/adhs/adhs-bei-kindern/)
-- [ADHS und
-  Partnerschaft](https://praxis-neuy.de/adhs/adhs-und-partnerschaft/)
-- [ADHS und Sucht](https://praxis-neuy.de/adhs/adhs-und-sucht/)
-- [Begleiterkrankungen](https://praxis-neuy.de/adhs/begleiterkrankungen/)
-- [Diagnostik](https://praxis-neuy.de/adhs/diagnostik/)
-- [Empfehlungen](https://praxis-neuy.de/adhs/empfehlungen/)
-- [Fragebögen](https://praxis-neuy.de/adhs/frageboegen/)
-- [Neurobiologie](https://praxis-neuy.de/adhs/neurobiologie/)
-- [Therapie bei ADHS](https://praxis-neuy.de/adhs/therapie/)
-- [Tipps für
-  ADHS-Betroffene](https://praxis-neuy.de/adhs/lebensanleitung-fuer-adhs-betroffene/)
-- [Tipps für Angehörige und
-  Partner](https://praxis-neuy.de/adhs/ratgeber-fuer-ein-leben-mit-adhs-lern/)
-- [Ursachen](https://praxis-neuy.de/adhs/ursachen/)
-- [Adressen](https://praxis-neuy.de/adhs/adressen/)
+ADHD symptoms become especially challenging in professional environments, which demand:
 
-**Infos auf der Seite adhs-muenchen.net**
+*   consistent performance
+*   planning and prioritization
+*   teamwork, punctuality, and reliability
+*   emotional and social maturity
 
-[ADHS - eine besondere Art zu
-sein](https://adhs-muenchen.net/adhs-bei-erwachsenen/besondere-art-zu-sein/)
+Common workplace difficulties include:
 
-[Behandlungsangebote für
-Erwachsene](https://adhs-muenchen.net/adhs-bei-erwachsenen/behandlungsangebote/)
+**Cognitive Challenges**
 
-[Stand der
-Forschung](https://adhs-muenchen.net/adhs-bei-erwachsenen/stand-der-forschung/)
+*   **Poor concentration** → distractibility, frequent mistakes, losing track of tasks
+*   **Prioritization problems** → focusing on irrelevant details, difficulty deciding what to start
+*   **Weak self‑organization** → messy desks, losing documents, inefficient workflows
+*   **Procrastination** → last‑minute work causing stress for colleagues
+*   **Time management issues** → forgetting deadlines, chronic lateness
+*   **Forgetfulness** → instructions are forgotten moments later
+
+**Social & Emotional Challenges**
+
+*   **Impulsivity** → interrupting, sudden anger, impatience
+*   **High sensitivity** → feeling easily criticized, rejected, or hurt
+*   **Low frustration tolerance**
+*   **Strong sense of justice** → conflict with colleagues or supervisors
+*   **Motor restlessness** → making others nervous
+
+These challenges often lead to job changes, conflicts, reduced productivity, burnout, or unemployment.
+
+**Positive Traits of ADHD at Work**
+
+Despite the difficulties, people with ADHD can excel in the right environment. Strengths include:
+
+*   high creativity and original thinking
+*   enthusiasm and energy
+*   ability to stay calm in emergencies
+*   intuitive and unconventional problem‑solving
+*   passion‑driven productivity
+
+**Suitable Careers**
+
+ADHD individuals often thrive in:
+
+*   dynamic, fast‑paced jobs (sales, field work, journalism)
+*   emergency or crisis roles (paramedic, emergency doctor)
+*   justice‑related fields (prosecutor)
+*   creative or artistic professions (media, acting, politics, design)
+
+**Problematic Careers**
+
+Jobs that require:
+
+*   high precision
+*   repetitive or monotonous tasks
+*   routine data entry  
+    …are often unsuitable and can lead to poor performance or burnout.
+
+**Helpful Working Conditions**
+
+ADHD‑friendly environments provide:
+
+*   interesting, varied tasks
+*   room for creativity
+*   structured expectations with clear deadlines
+*   autonomy with supportive oversight
+*   minimal distractions
+
+Open‑plan offices are especially difficult due to sensory overload.
+
+**What ADHD Adults Need to Learn**
+
+To thrive professionally, individuals should work on:
+
+*   organization skills
+*   reliability
+*   emotional regulation
+*   patience and tolerance
+*   healthy communication and conflict handling
+
+**Self‑Employment Challenges**
+
+Although many seek independence, self‑employed ADHD adults often struggle with:
+
+*   taxes, invoices, financial administration
+*   managing schedules
+*   overseeing employees
+
+These issues frequently lead to business failure.
+
+**Overall Message**
+
+Success depends on finding a job environment that aligns with ADHD strengths—like Hirschhausen’s “penguin in the desert” metaphor:  
+you must be in the right environment to thrive.
+
+

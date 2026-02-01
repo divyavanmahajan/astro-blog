@@ -23,6 +23,12 @@
 
     button?.addEventListener("click", () => {
         const isMono = target.classList.toggle(MONO_CLASS);
+        console.log(
+            "Font Toggle: isMono =",
+            isMono,
+            "Classes on HTML:",
+            target.className,
+        );
         button.classList.toggle("is-mono", isMono);
         localStorage.setItem(STORAGE_KEY, isMono ? "mono" : "sans");
     });

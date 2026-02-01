@@ -3,6 +3,7 @@ title: "Jan 2026 Top TypeScript Repos on GitHub"
 description: "TIL what topped GitHub's TypeScript trending list for January 2026—AI agents, coding tools, and MCP."
 pubDate: 2026-02-01
 tags: ["typescript", "github", "ai-agents", "open-source"]
+heroImage: "/images/github_trending_typescript_jan2026.png"
 draft: false
 ---
 

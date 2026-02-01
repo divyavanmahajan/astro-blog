@@ -41,9 +41,11 @@ import FontToggle from "../../../components/FontToggle.astro";
                 <a href={import.meta.env.BASE_URL + "til/"} class="back-link"
                     >← Back to TIL</a
                 >
-                <FontToggle />
             </div>
             <h1>TIL: {tag}</h1>
+            <div class="header-controls">
+                <FontToggle />
+            </div>
             <p class="tag-count">
                 {tils.length}
                 {tils.length === 1 ? "entry" : "entries"}
@@ -102,10 +104,13 @@ import FontToggle from "../../../components/FontToggle.astro";
     }
 
     .header-top {
+        margin-bottom: 0.5rem;
+    }
+
+    .header-controls {
+        margin-bottom: 1rem;
         display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 1rem;
+        justify-content: flex-start;
     }
 
     .back-link {

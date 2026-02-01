@@ -28,6 +28,8 @@ import FontToggle from "../../components/FontToggle.astro";
         <header class="til-post-header">
             <div class="header-top">
                 <h1>{til.data.title}</h1>
+            </div>
+            <div class="header-controls">
                 <FontToggle />
             </div>
             <div class="til-meta">
@@ -83,11 +85,13 @@ import FontToggle from "../../components/FontToggle.astro";
     }
 
     .header-top {
+        margin-bottom: 0.5rem;
+    }
+
+    .header-controls {
+        margin-bottom: 1rem;
         display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 1rem;
-        margin-bottom: 0.75rem;
+        justify-content: flex-start;
     }
 
     .til-meta {

@@ -37,31 +37,34 @@ function formatDate(date: Date): string {
 >
     <div class="til-page">
         <header class="til-header">
-            <a
-                href={import.meta.env.BASE_URL + "til/rss.xml"}
-                class="rss-icon"
-                title="Atom feed"
-            >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
+            <div class="header-top">
+                <a
+                    href={import.meta.env.BASE_URL + "til/rss.xml"}
+                    class="rss-icon"
+                    title="Atom feed"
                 >
-                    <circle cx="6.18" cy="17.82" r="2.18"></circle>
-                    <path
-                        d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"
-                    ></path>
-                </svg>
-            </a>
-            <span class="til-intro">
-                Quick notes about things I've learned. You may also enjoy <a
-                    href={import.meta.env.BASE_URL}>my blog</a
-                >.
-            </span>
-            <div class="header-spacer"></div>
-            <FontToggle />
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                    >
+                        <circle cx="6.18" cy="17.82" r="2.18"></circle>
+                        <path
+                            d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"
+                        ></path>
+                    </svg>
+                </a>
+                <span class="til-intro">
+                    Quick notes about things I've learned. You may also enjoy <a
+                        href={import.meta.env.BASE_URL}>my blog</a
+                    >.
+                </span>
+            </div>
+            <div class="header-controls">
+                <FontToggle />
+            </div>
         </header>
 
         <div class="til-layout">
@@ -122,11 +125,22 @@ function formatDate(date: Date): string {
 
     .til-header {
         display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .header-top {
+        display: flex;
         align-items: center;
         gap: 0.6rem;
-        margin-bottom: 1.5rem;
-        padding-bottom: 1rem;
-        border-bottom: 1px solid var(--color-border);
+    }
+
+    .header-controls {
+        display: flex;
+        justify-content: flex-start;
     }
 
     .rss-icon {
@@ -143,10 +157,6 @@ function formatDate(date: Date): string {
     .til-intro {
         color: var(--color-text-light);
         font-size: 0.95rem;
-    }
-
-    .header-spacer {
-        flex: 1;
     }
 
     .til-intro a {

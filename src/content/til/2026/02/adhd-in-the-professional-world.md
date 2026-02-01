@@ -1,7 +1,7 @@
 ---
 title: "ADHD in the Professional World: Challenges and Strengths"
 description: "TIL about how ADHD impacts career development, common workplace challenges, and the unique strengths neurodivergent individuals bring to the table."
-pubDate: 2026-02-01
+pubDate: 2026-01-31
 tags: ["adhd", "career", "productivity", "mental-health", "neurodiversity"]
 draft: false
 ---

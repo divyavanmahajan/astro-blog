@@ -176,7 +176,8 @@ function generateTILSummary(key, tils, period) {
     tils.forEach(til => {
         const desc = til.description || "";
         const oneSentence = desc.split('.')[0] + (desc.includes('.') ? '.' : '');
-        summary += `🚀 ${til.title}\n${oneSentence}\nRead more: ${til.url}\n\n`;
+        const dateStr = new Date(til.date).toISOString().split('T')[0];
+        summary += `🚀 [${dateStr}] ${til.title}\n${oneSentence}\nRead more: ${til.url}\n\n`;
     });
 
     return summary.trim();

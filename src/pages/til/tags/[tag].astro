@@ -26,6 +26,8 @@ export async function getStaticPaths() {
 }
 
 const { tag, tils } = Astro.props;
+
+import FontToggle from "../../../components/FontToggle.astro";
 ---
 
 <BaseLayout
@@ -35,9 +37,12 @@ const { tag, tils } = Astro.props;
 >
     <div class="til-tag-page">
         <header class="tag-header">
-            <a href={import.meta.env.BASE_URL + "til/"} class="back-link"
-                >← Back to TIL</a
-            >
+            <div class="header-top">
+                <a href={import.meta.env.BASE_URL + "til/"} class="back-link"
+                    >← Back to TIL</a
+                >
+                <FontToggle />
+            </div>
             <h1>TIL: {tag}</h1>
             <p class="tag-count">
                 {tils.length}
@@ -94,6 +99,13 @@ const { tag, tils } = Astro.props;
         margin-bottom: 2rem;
         padding-bottom: 1.5rem;
         border-bottom: 1px solid var(--color-border);
+    }
+
+    .header-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
     }
 
     .back-link {

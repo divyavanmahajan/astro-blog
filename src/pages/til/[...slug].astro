@@ -15,6 +15,8 @@ const { Content } = await til.render();
 
 const displayDate = til.data.updatedDate || til.data.pubDate;
 const dateLabel = til.data.updatedDate ? "Updated" : "Published";
+
+import FontToggle from "../../components/FontToggle.astro";
 ---
 
 <BaseLayout
@@ -24,7 +26,10 @@ const dateLabel = til.data.updatedDate ? "Updated" : "Published";
 >
     <article class="til-post">
         <header class="til-post-header">
-            <h1>{til.data.title}</h1>
+            <div class="header-top">
+                <h1>{til.data.title}</h1>
+                <FontToggle />
+            </div>
             <div class="til-meta">
                 <time datetime={displayDate.toISOString()}>
                     {dateLabel}: {
@@ -73,6 +78,15 @@ const dateLabel = til.data.updatedDate ? "Updated" : "Published";
 
     .til-post-header h1 {
         font-size: 2rem;
+        margin-bottom: 0.75rem;
+        flex: 1;
+    }
+
+    .header-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
         margin-bottom: 0.75rem;
     }
 

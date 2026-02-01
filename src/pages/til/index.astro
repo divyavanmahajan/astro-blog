@@ -2,6 +2,8 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 
+import FontToggle from "../../components/FontToggle.astro";
+
 const allTils = (await getCollection("til"))
     .filter((til) => !til.data.draft)
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
@@ -58,6 +60,8 @@ function formatDate(date: Date): string {
                     href={import.meta.env.BASE_URL}>my blog</a
                 >.
             </span>
+            <div class="header-spacer"></div>
+            <FontToggle />
         </header>
 
         <div class="til-layout">
@@ -139,6 +143,10 @@ function formatDate(date: Date): string {
     .til-intro {
         color: var(--color-text-light);
         font-size: 0.95rem;
+    }
+
+    .header-spacer {
+        flex: 1;
     }
 
     .til-intro a {

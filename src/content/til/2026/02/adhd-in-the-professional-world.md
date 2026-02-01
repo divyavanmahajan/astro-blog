@@ -28,3 +28,50 @@ The key to success is finding an environment that minimizes monotonous routine a
 
 *This TIL was based on a summary of the following German article:* 
 [ADHS und Beruf - Praxis Neuy](https://praxis-neuy.de/adhs/adhs-und-beruf/)
+
+### Related resources (German language)
+If you don't speak German, you can use a translation tool to read these resources.
+
+- [ADHS und Beruf - Praxis Neuy](https://praxis-neuy.de/adhs/adhs-und-beruf/)
+**Literatur:**
+
+- Caoline Bonnes: die Berufliche Entwicklung  von Menschen mit ADHS
+- Lynn Weiss: ADS im Job
+
+- [ADHS-Informationen](https://praxis-neuy.de/adhs/)
+- [ADHS im Alter](https://praxis-neuy.de/adhs/adhs-im-alter/)
+- [ADHS und Autismus](https://praxis-neuy.de/adhs/adhs-und-autismus/)
+- [ADHS und Ausbildung](https://praxis-neuy.de/adhs/ausbildung/)
+- [ADHS und Beruf](https://praxis-neuy.de/adhs/adhs-und-beruf/)
+- [ADHS und
+  Depression](https://praxis-neuy.de/adhs/adhs-und-depression/)
+- [ADHS bei
+  Erwachsenen](https://praxis-neuy.de/adhs/adhs-bei-erwachsenen/)
+- [ADHS bei Frauen](https://praxis-neuy.de/adhs/adhs-bei-frauen/)
+- [ADHS bei Kindern](https://praxis-neuy.de/adhs/adhs-bei-kindern/)
+- [ADHS und
+  Partnerschaft](https://praxis-neuy.de/adhs/adhs-und-partnerschaft/)
+- [ADHS und Sucht](https://praxis-neuy.de/adhs/adhs-und-sucht/)
+- [Begleiterkrankungen](https://praxis-neuy.de/adhs/begleiterkrankungen/)
+- [Diagnostik](https://praxis-neuy.de/adhs/diagnostik/)
+- [Empfehlungen](https://praxis-neuy.de/adhs/empfehlungen/)
+- [Fragebögen](https://praxis-neuy.de/adhs/frageboegen/)
+- [Neurobiologie](https://praxis-neuy.de/adhs/neurobiologie/)
+- [Therapie bei ADHS](https://praxis-neuy.de/adhs/therapie/)
+- [Tipps für
+  ADHS-Betroffene](https://praxis-neuy.de/adhs/lebensanleitung-fuer-adhs-betroffene/)
+- [Tipps für Angehörige und
+  Partner](https://praxis-neuy.de/adhs/ratgeber-fuer-ein-leben-mit-adhs-lern/)
+- [Ursachen](https://praxis-neuy.de/adhs/ursachen/)
+- [Adressen](https://praxis-neuy.de/adhs/adressen/)
+
+**Infos auf der Seite adhs-muenchen.net**
+
+[ADHS - eine besondere Art zu
+sein](https://adhs-muenchen.net/adhs-bei-erwachsenen/besondere-art-zu-sein/)
+
+[Behandlungsangebote für
+Erwachsene](https://adhs-muenchen.net/adhs-bei-erwachsenen/behandlungsangebote/)
+
+[Stand der
+Forschung](https://adhs-muenchen.net/adhs-bei-erwachsenen/stand-der-forschung/)

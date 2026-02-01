@@ -10,7 +10,7 @@ Achieving concurrency with AI subagents is a significant step toward faster and 
 
 ### Multiple Subagents in Cursor CLI
 
-Cursor CLI has deep support for parallel execution of subagents. This allows you to break down a large feature or refactor into smaller, independent sub-tasks that can be worked on simultaneously.
+Cursor CLI has deep support for parallel execution of subagents. This allows you to break down a large feature or refactor into smaller, independent sub-tasks that can be worked on simultaneously. You can read more in the [official subagents documentation](https://cursor.com/docs/agent/subagents).
 
 - **Parallel Subagents**: Cursor 2.4+ allows you to spawn autonomous subagents that work in parallel. Each subagent maintains its own isolated context window, preventing the main conversation from becoming cluttered.
 - **Git Worktree Integration**: To avoid file system conflicts, Cursor leverages Git worktrees. Each concurrent agent runs in its own worktree, allowing them to edit, build, and test code without interfering with other agents.

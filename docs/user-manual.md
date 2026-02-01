@@ -166,11 +166,21 @@ You can automatically generate LinkedIn-ready articles and posts from your blog 
     -   Paste the URL into your post's frontmatter as `linkedinArticleUrl: "https://..."`.
     -   This allows the tool to generate **Update Summaries** if you change the post later.
 
-### Updating Posts
-If you update a blog post that was previously published:
-1.  The tool will automatically regenerate the files.
-2.  Check `update-summary.txt` for a generated "Article Update" announcement.
-3.  Manually update the LinkedIn article with the new content.
+### TIL Summaries
+
+The LinkedIn script can also aggregate your "Today I Learned" (TIL) posts into periodic summaries (weekly or monthly). This is a great way to share a digest of your mini-learnings.
+
+1.  **Generate Summaries**:
+    -   **Monthly (Default)**: `npm run linkedin` or `node scripts/generate-linkedin.js --period=month`
+    -   **Weekly**: `node scripts/generate-linkedin.js --period=week`
+    -   *Note*: The weekly period starts on **Monday**.
+2.  **Find your summaries**:
+    -   **Monthly**: `linkedin/til/monthly/post-YYYY-MM.txt`
+    -   **Weekly**: `linkedin/til/week/post-YYYY-MM-DD.txt` (date is the start of the week).
+3.  **Publish to LinkedIn**:
+    -   Open the relevant `.txt` file.
+    -   Copy the content and paste it as a standard LinkedIn post.
+    -   The summary includes a one-sentence description for each TIL and a link back to your blog at `https://www.vanmahajan.de`.
 
 ---
 

@@ -13,6 +13,30 @@ def run_command(command):
         print(f"Error executing command: {e}")
         sys.exit(1)
 
+def post_process(file_path):
+    """Performs final structural cleanup on the markdown file."""
+    import re
+    print(f"Post-processing: {file_path}")
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        # 1. Add # Info at the start (avoid double adding if re-run)
+        if not content.startswith("# Info"):
+            content = "# Info\n\n" + content
+        
+        # 2. Replace General\nSummary with # General Summary
+        content = re.sub(r'(?m)^General\nSummary', '# General Summary', content)
+        
+        # 3. Replace Transcript with # Transcript
+        content = re.sub(r'(?m)^Transcript$', '# Transcript', content)
+        
+        with open(file_path, 'w', encoding='utf-8') as f:
+            f.write(content)
+            
+    except Exception as e:
+        print(f"Error during post-processing: {e}")
+
 def main():
     parser = argparse.ArgumentParser(
         description="Master script to process Fireflies.ai transcripts: converts HTML, removes images, and fixes double caps typos."
@@ -49,6 +73,9 @@ def main():
     # 3. Fix double uppercase letters at sentence starts
     fix_caps_script = os.path.join(script_dir, "fix_double_caps.py")
     run_command([sys.executable, fix_caps_script, markdown_file, "--in-place"])
+    
+    # 4. Final structural cleanup
+    post_process(markdown_file)
     
     print(f"\nSuccess! Processed transcript saved to: {markdown_file}")
 

@@ -30,6 +30,8 @@ Run the script on your saved HTML file:
 python3 scripts/process_firefly_transcript.py path/to/transcript.html
 ```
 
+Source: [process_firefly_transcript.py](https://github.com/divyanshu/astro-blog/blob/main/scripts/process_firefly_transcript.py)
+
 The script automatically creates a `.md` file in the same directory, cleaned and ready for your notebook or blog.
 
 ## 3. Manual clean-up

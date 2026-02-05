@@ -35,10 +35,6 @@ python3 scripts/process_firefly_transcript.py path/to/transcript.html
 
 The script automatically creates a `.md` file in the same directory, cleaned and ready for your notebook or blog.
 
-## 3. The Logic Behind the Clean-up
-The most satisfying part of this automation is fixing "Double Caps" using Regex. Meeting transcripts often capture the first letter twice when the speaker starts abruptly:
+## 3. Manual clean-up
 
-**Regex Pattern:** `(?m)(^|[.?!]\s+)(\s*)([A-Z])\3`  
-**Replacement:** `\1\2\3`
-
-This ensures that only double letters at the **start of a line or sentence** are fixed, while names like "Aaron" in the middle of a sentence remains untouched.
+You still need to go through the generated markdown to clean it up. But the effort is significantly reduced.

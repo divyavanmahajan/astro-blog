@@ -59,6 +59,14 @@ rsync -a -E -H -P -c --min-size=5M /Volumes/Macintosh\ HD\ -\ Data /Volumes/iMac
 
 I found that **transferring large files first went a lot faster** than the small files, which incur significant overhead. After the large files were done, I ran a single, standard rsync to catch everything else. For a roughly 1TB internal drive, the total transfer took about **8 hours** to complete securely.
 
+### Excluding Volatile and Cloud Data
+
+To further speed up the transfer and avoid potential errors with system-managed folders, I also used `--exclude` flags. Specifically, I excluded the `Library/Containers` directory, which contains a massive number of small cache and state files for apps, and the iCloud-related `Library/Mobile Documents` (Mobile Data) folder, which can cause sync conflicts or stalls during a manual recovery.
+
+```bash
+rsync ... --exclude='Library/Containers' --exclude='Library/Mobile Documents' ...
+```
+
 ## Reinstalling macOS Monterey
 
 Once the backup was verified, I proceeded to the final steps:

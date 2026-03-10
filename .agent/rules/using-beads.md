@@ -1,5 +1,5 @@
 ---
-trigger: always_on
+trigger: manual
 ---
 
 This project uses **bd** (beads) for issue tracking. Run `bd onboard` to get started.

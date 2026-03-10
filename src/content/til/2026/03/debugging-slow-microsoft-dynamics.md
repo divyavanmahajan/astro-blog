@@ -37,6 +37,20 @@ For repeated automated analysis, you can capture and analyze network traffic usi
 * Use `uvx har-capture` to record a HTTP Archive (HAR) file of the session.(see https://pypi.org/project/har-capture/)
 * Use `uvx dvm-haranalyzer` to analyze the generated HAR file for specific Dynamics bottlenecks. (see https://pypi.org/project/dvm-haranalyzer/)
 
+```bash
+# Include images and fonts in the capture (excluded by default)
+uvx "har-capture[cli]" get https://example.com --output mypage.har --include-images --include-fonts
+
+# Use Firefox instead of the default Chromium
+uvx "har-capture[cli]" get https://example.com --browser firefox --output mypage.har 
+
+# Skip sanitization (not recommended for sharing)
+uvx "har-capture[cli]" get https://example.com --no-sanitize --output mypage.har 
+
+# Analyze the HAR file
+uvx dvm-haranalyzer mypage.har
+```
+
 Dynamics forms often slow down due to custom JS on OnLoad events.
 
 ### 3. Review Dynamics Form Load Performance

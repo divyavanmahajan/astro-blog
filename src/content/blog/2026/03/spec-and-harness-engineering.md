@@ -14,11 +14,11 @@ draft: false
 
 # Introduction
 
-Building software with AI agents has undergone a rapid evolution. We started with \"code completion\" then moved o \"vibe coding\"—a conversational flow where you gave the intent and code appeared. But as we move from quick prototypes to complex, production-grade systems, the \"vibes\" alone aren't enough. We need something more persistent, rigorous, and scalable. Welcome to the era of **Spec Engineering** and **Harness Engineering**.
+Building software with AI agents has undergone a rapid evolution. We started with \"code completion\" then moved onto \"vibe coding\"—a conversational flow where you gave the intent and code appeared. But as we move from quick prototypes to complex, production-grade systems, the \"vibes\" alone aren't enough. We need something more persistent, rigorous, and scalable. Welcome to the era of **Spec Engineering** and **Harness Engineering**.
 
 ## From Vibe Coding to Spec Engineering
 
-Here, I've gathered ideas from a few blog posts - which I recommend that you read if this is interesing for you. 
+I've gathered ideas from various blog posts that I recommend reading.
 
 [Vibe Coding Meets Spec Engineering – What Building With AI Agents Really Looks Like](https://chinnychukwudozie.com/2026/03/10/vibe-coding-meets-spec-engineering-what-building-with-ai-agents-really-looks-like/) by Chinny Chukwudozie.
 
@@ -26,7 +26,9 @@ Vibe coding is the practice of coding by intent rather than implementation. You 
 
 Spec engineering solves this by treating specifications as persistent instructions for AI agents. By maintaining structured markdown files like `AGENTS.md` (for repo maps and rules) or `LESSONS.md` (for accumulated pitfalls) directly in the repository, you create a dedicated memory layer. The agent reads these files automatically every session, ensuring it adheres to your non-negotiable standards—like using specific tools (e.g., `uv`) or security protocols—without needing to be re-prompted.
 
-The power of this approach lies in the combination: use vibe coding to explore and discover \"what's possible,\" then use spec engineering to capture and accumulate \"what's right.\" It transforms the AI agent from a fleeting collaborator into a deeply integrated team member that understands the project's long-term soul and constraints.
+The power of this approach lies in the combination: 
+- use vibe coding to explore and discover \"what's possible,\" 
+- use spec engineering to capture and accumulate \"what's right.\" It transforms the AI agent from a fleeting collaborator into a deeply integrated team member that understands the project's long-term soul and constraints.
 
 ## Spec-Driven Development (SDD)
 

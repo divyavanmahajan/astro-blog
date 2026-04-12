@@ -83,6 +83,30 @@ To implement a robust harness, OpenAI recommends several practical practices:
 
 By focusing on the harness, engineers enable agents to execute with extreme velocity while maintaining a level of quality and consistency that was previously only possible through manual human oversight.
 
+### Agentic Delegation in Practice: Build Hour Insights
+
+In a recent [OpenAI Build Hour on API & Codex](https://www.youtube.com/watch?v=rhsSqr0jdFw), developers showcased how harness engineering is transitioning the industry toward **Agentic Delegation**. Instead of interactive pair programming, developers are orchestrating agents equipped with large context windows to execute multi-step features autonomously. However, delegating complex tasks to agents often results in what is informally termed "AI Slop" — code that functions but doesn't meet team architectural standards, security requirements, or non-functional expectations because context was lost or ignored.
+
+Teams that invest in harnessing their coding agents (like OpenAI's internal projects and platforms like Basis) are seeing massive gains: leaping from 0.25 engineer equivalents to **3–10× engineer throughput per engineer**. By making success architectural rather than relying on prompt-engineering inside human chat windows, institutional knowledge is embedded directly into the codebase, producing a compounding flywheel of quality that improves output for everyone.
+
+#### The Solution / Insight
+
+The solution is moving context from Slack threads and ad-hoc conventions into the codebase itself through strict, statically enforced guardrails. Key patterns of Harness Engineering include:
+
+- **Explicit `agents.md` Files:** Providing agents with explicit architectural context, standards, and operating instructions at both root and module levels.
+- **Static Guardrails:** "Vibe-coding" custom ESLint rules or equivalent linters to ban known anti-patterns programmatically before an agent can commit.
+- **Reviewer Agents:** Deploying specialized sub-agents (e.g., reliability, security, or product QA reviewers) that leave PR comments the authoring agent MUST address.
+- **Agent TDD:** Generating specs, manual QA plans, and end-to-end tests before implementation so the agent can self-verify correctness.
+- **Skills vs Docs:** Writing human-facing documentation in regular docs, but creating "Skills" (reusable context bundles) specifically curated for agent consumption.
+
+#### Some practical implementations of harness engineering:
+- **Symphony:** An open-source orchestrator developed internally at OpenAI that automates the full ticket-to-merge pipeline. It manages work trees, implements code, loops with agentic reviewers, and delivers merge-ready PRs autonomously, leading to a 3–10× increase in throughput.
+- **Hierarchical Context & Skills:** Companies like Basis use root-level and module-level `agents.md` files to enforce standards. They specifically separate "Docs" (human-facing) from "Skills" (machine-readable context bundles tailored for agent consumption).
+- **Tool Search and Hosted Shells:** Giving agents access to containerized bash environments (Hosted Shells) and progressively disclosing tools via "Tool Search" reduces context bloat and limits hallucinations.
+
+These examples reinforce that making the leap to autonomous coding agents requires deep investment in the repository's harness—moving context out of chat threads and into statically enforceable guardrails. 
+
+
 ***
 
 # References
@@ -93,4 +117,4 @@ By focusing on the harness, engineers enable agents to execute with extreme velo
 4. [Superpowers](https://github.com/obra/superpowers) - Agentic skills framework
 5. [Specification Grounding: The Missing Link in Vibe Coding](https://unstract.com/blog/specification-grounding-vibe-coding/) - Unstract
 6. [Harness Engineering](https://openai.com/index/harness-engineering/) - OpenAI
-
+7. [Build Hour: API & Codex](https://www.youtube.com/watch?v=rhsSqr0jdFw) - YouTube

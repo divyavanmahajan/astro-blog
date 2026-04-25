@@ -9,7 +9,7 @@ heroImage: "/images/connecting-neo4j-to-ai-agents-with-mcp-hero.png"
 linkedin: true
 linkedinMessage: "The grand finale of our AI in Architecture series! 🚀 Discover how to wire your Neo4j Knowledge Graph directly into Claude or Copilot using the Model Context Protocol (MCP), enabling you to chat with your enterprise architecture. #AI #MCP #Neo4j #EnterpriseArchitecture"
 series: "ai_in_arch-003"
-draft: false
+draft: true
 ---
 
 # Introduction

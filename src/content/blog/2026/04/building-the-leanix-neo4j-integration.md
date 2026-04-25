@@ -8,8 +8,8 @@ tags: ["Knowledge Graph", "Neo4j", "SAP LeanIX", "Integration", "Cypher"]
 heroImage: "/images/building-the-leanix-neo4j-integration-hero.png"
 linkedin: true
 linkedinMessage: "Part 2 of the AI in Architecture series is out! Learn how to extract your SAP LeanIX factsheets and model them directly into a Neo4j Knowledge Graph. #EnterpriseArchitecture #Neo4j #KnowledgeGraph"
-series: "ai_in_arch"
-draft: true
+series: "ai_in_arch-002"
+draft: false
 ---
 
 # Introduction

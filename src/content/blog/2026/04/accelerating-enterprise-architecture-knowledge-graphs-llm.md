@@ -8,7 +8,7 @@ tags: ["Knowledge Graph", "Neo4j", "SAP LeanIX", "LLM", "MCP"]
 heroImage: "/images/accelerating-enterprise-architecture-knowledge-graphs-llm-hero.png"
 linkedin: true
 linkedinMessage: "What happens when you connect your enterprise architecture to an LLM? By combining SAP LeanIX, Neo4j, and MCP, we can ask our AI to reason over our landscape. Check out out my latest post! #EnterpriseArchitecture #AI #KnowledgeGraphs #Neo4j"
-series: "ai_in_arch"
+series: "ai_in_arch-001"
 draft: false
 ---
 
@@ -34,7 +34,7 @@ If you look closely at how LeanIX operates, it inherently uses a graph-like stru
 
 ## The Engine: Neo4j
 
-While LeanIX holds this rich, interconnected data, to perform complex, multi-hop reasoning over millions of data points rapidly, we need a system optimized specifically for graph mathematics. 
+While LeanIX holds this rich, interconnected data, to perform complex, multi-hop reasoning over millions of data points rapidly, we need a system optimized specifically for graph structures.
 
 This is where **Neo4j** comes in. Neo4j is a native graph database designed to store and traverse connected data efficiently. By extracting our graph-like operational data from SAP LeanIX and modeling it as a formal Knowledge Graph in Neo4j, we unlock the ability to run advanced graph algorithms, identify hidden dependencies, and visualize the architecture in real-time.
 

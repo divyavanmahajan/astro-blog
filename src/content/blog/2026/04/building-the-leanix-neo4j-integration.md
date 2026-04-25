@@ -18,61 +18,66 @@ In our previous post, we explored the massive potential of combining Enterprise 
 
 In this second part of the series, we take a deep dive into the practical side: extracting your operational data out of SAP LeanIX and modeling it into Neo4j as a highly traversable graph.
 
-## Step 1: Setting up the LeanIX Integration
+## Step 1: Setting up the LeanIX Proxy
 
-First, we need to extract our data. To do this, we'll leverage a CLI tool called `dvm-leanix`. 
+First, we need to authenticate and connect to our workspace. To bypass complex API limitations, we'll leverage a proxy CLI tool called `dvm-leanix`. 
 
 You can investigate its capabilities by running the help command locally:
 ```bash
 uvx dvm-leanix --help
 ```
-Using this tool, you can easily proxy requests and create a local GraphQL endpoint that interfaces with your LeanIX workspace, giving you a streamlined pipeline to query exactly the data you need.
 
-## Step 2: Downloading Factsheets and Relationships
+This reveals standard options for proxying LeanIX:
+```text
+Options
+-------
+    --url           LeanIX workspace base URL
+    --port          Port to listen on (default: 8765)
+    --connect       Chrome DevTools Protocol endpoint to connect to an existing browser
+```
 
-Once your GraphQL endpoint is up and running, you use `dvm-leanix` to pull the core architectural nodes and edges. In LeanIX terminology, these are called **Factsheets** (e.g., Applications, IT Components, Business Capabilities) and the **Relationships** that connect them.
+Using this tool, you can easily deploy a local proxy (`dvm-leanix serve`) that handles the OAuth handshakes and interfaces with your LeanIX workspace, giving you a streamlined pipeline to query exactly the data you need.
 
-Extracting these allows us to export the data into a structured format (such as CSVs or JSON arrays) which serves as the payload for our Neo4j ingestion.
+## Step 2: Generating the Schema Mapping
 
-## Step 3: Defining the Graph Model
+With the proxy running, we need to translate the LeanIX data model into a graph structure. LeanIX uses **Factsheets** (e.g., Applications, IT Components) and deeply nested **Relationships**. A GraphQL extraction returns verbose relations like `relApplicationToBusinessCapability`.
 
-The most critical part of this integration is the mapping translation. A GraphQL extraction from LeanIX returns data in a typical, nested JSON structure. Our goal is to map this to a **Nodes and Relations** property schema that makes sense for graph traversal.
-
-For example, LeanIX represents a relationship between an application and a business capability in a verbose manner, such as `relApplicationToBusinessCapability`.
-
-In our Neo4j model, we want to flatten and clarify this semantic link. We convert that GraphQL relation into a clear Graph edge:
+In our Neo4j model, we want to flatten and clarify this semantic link into a clear Graph edge:
 ```cypher
 (Application)-[:SUPPORTS]->(BusinessCapability)
 ```
-Defining clear, real-world verbs (`SUPPORTS`, `DEPENDS_ON`, `HOSTS`) for relationships is what allows a downstream LLM to intuitively reason over the completed graph.
 
-## Step 4: Converting Data to Idempotent Cypher Scripts
+To automate this, we use the `dvm-eagraph` tool. First, we generate a mapping file:
+```bash
+uvx dvm-eagraph --generate-mapping
+```
+This scans your live LeanIX workspace and generates a YAML mapping file that controls which FactSheet types to load and how Neo4j node labels and relationship names are derived.
 
-With our model defined and data extracted, we must craft our loading scripts. Instead of simple `CREATE` statements (which will duplicate data if you run them twice), we need our Cypher scripts to be **idempotent**. This means they can be run multiple times safely without ruining the graph state.
+## Step 3: Downloading and Loading into Neo4j
 
-We achieve this using the `MERGE` command in Neo4j. Here is a conceptual example:
+Once your mapping is configured, `dvm-eagraph` handles the heavy lifting of pulling the data and writing it to Neo4j.
 
-```cypher
-// Load the relationships from our extracted CSV
-LOAD CSV WITH HEADERS FROM 'file:///leanix_app_to_bc.csv' AS row
-
-// Find or create the Application Node
-MERGE (a:Application { id: row.app_id })
-ON CREATE SET a.name = row.app_name
-
-// Find or create the Business Capability Node
-MERGE (bc:BusinessCapability { id: row.bc_id })
-ON CREATE SET bc.name = row.bc_name
-
-// Create the relationship only if it doesn't already exist
-MERGE (a)-[:SUPPORTS]->(bc)
+You can see its capabilities via the help command:
+```bash
+uvx dvm-eagraph --help
 ```
 
-## Step 5: Loading the Graph into Neo4j
+```text
+Usage
+-----
+    # Full run (download from LeanIX + load into Neo4j)
+    dvm-eagraph
 
-Finally, you execute your idempotent Cypher scripts against your Neo4j instance. 
+    # Use a custom mapping file
+    dvm-eagraph --mapping my-mapping.yaml
 
-With the nodes instantiated and the relationships forged, your Knowledge Graph comes to life. What used to be rows in an export or nested JSON objects is now a rich, visual map of your entire enterprise ecosystem.
+    # Download only (saves JSON, skips Neo4j)
+    dvm-eagraph --skip-neo4j
+```
+
+Instead of manually crafting complex, idempotent Cypher `MERGE` queries, `dvm-eagraph` takes your mapping file, downloads the necessary JSON payloads via the proxy, and automatically executes optimal Neo4j transaction batches. 
+
+With the nodes instantiated and the relationships forged, what used to be nested JSON objects is now a rich, visual map of your entire enterprise ecosystem.
 
 ## What's Next?
 
